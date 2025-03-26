@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Live Search with Pagination Reset - Alpine.js</title>
+        <script
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+            defer
+        ></script>
+    </head>
+    <body>
+        <div x-data="liveSearch()" class="p-4">
+            <!-- Input pencarian -->
+            <input
+                type="text"
+                x-model="searchTerm"
+                placeholder="Cari nama..."
+                class="border p-2 w-full mb-4"
+            />
+
+            <!-- Tabel hasil pencarian -->
+            <table class="min-w-full bg-white border">
+                <thead>
+                    <tr>
+                        <th class="py-2">Nama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="item in paginatedData" :key="item.nama">
+                        <tr>
+                            <td class="py-2 border-t" x-text="item.nama"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <!-- Pagination Controls -->
+            <div class="mt-4">
+                <button
+                    @click="prevPage"
+                    :disabled="currentPage === 1"
+                    class="border px-4 py-2 mr-2"
+                >
+                    Prev
+                </button>
+
+                <span
+                    >Page <span x-text="currentPage"></span> of
+                    <span x-text="totalPages"></span
+                ></span>
+
+                <button
+                    @click="nextPage"
+                    :disabled="currentPage === totalPages"
+                    class="border px-4 py-2 ml-2"
+                >
+                    Next
+                </button>
+            </div>
+        </div>
+
+        <script>
+            function liveSearch() {
+                return {
+                    searchTerm: "", // Variabel pencarian
+                    data: [
+                        { nama: "abc" },
+                        { nama: "xyz" },
+                        { nama: "123" },
+                        { nama: "hello" },
+                        { nama: "test1" },
+                        { nama: "test2" },
+                        { nama: "test3" },
+                        { nama: "test4" },
+                        { nama: "test5" },
+                        { nama: "test6" },
+                        { nama: "test7" },
+                        { nama: "test8" },
+                        { nama: "test9" },
+                        { nama: "test10" },
+                        { nama: "test11" },
+                        { nama: "test12" },
+                    ], // Data JSON statis
+                    perPage: 10, // Jumlah item per halaman
+                    currentPage: 1,
+
+                    // Reset halaman ke 1 saat pencarian berubah
+                    init() {
+                        this.$watch("searchTerm", () => {
+                            this.currentPage = 1;
+                        });
+                    },
+
+                    // Filter data berdasarkan searchTerm
+                    get filteredData() {
+                        if (this.searchTerm === "") {
+                            return this.data; // Jika input kosong, tampilkan semua data
+                        }
+
+                        return this.data.filter((item) =>
+                            item.nama
+                                .toLowerCase()
+                                .includes(this.searchTerm.toLowerCase())
+                        );
+                    },
+
+                    // Data yang akan ditampilkan berdasarkan pagination
+                    get paginatedData() {
+                        const start = (this.currentPage - 1) * this.perPage;
+                        const end = this.currentPage * this.perPage;
+                        return this.filteredData.slice(start, end);
+                    },
+
+                    // Total halaman
+                    get totalPages() {
+                        return Math.ceil(
+                            this.filteredData.length / this.perPage
+                        );
+                    },
+
+                    // Navigasi ke halaman sebelumnya
+                    prevPage() {
+                        if (this.currentPage > 1) {
+                            this.currentPage--;
+                        }
+                    },
+
+                    // Navigasi ke halaman berikutnya
+                    nextPage() {
+                        if (this.currentPage < this.totalPages) {
+                            this.currentPage++;
+                        }
+                    },
+                };
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-HCumrUW0.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CPb5_nD6.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/map.js": {
+    "file": "assets/map-F35ken9Q.js",
+    "name": "map",
+    "src": "resources/js/map.js",
+    "isEntry": true
+  }
+}
