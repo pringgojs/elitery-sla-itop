@@ -1,13 +1,10 @@
 <div>
-    <x-table :headers="['Action', 'Created At', 'Organization', 'Title', 'Agent']" title="Ticket">
+    <x-table :headers="['Action', 'Created At', 'Organization', 'Title', 'Agent L1', 'Agent L2']" title="Ticket">
         <!-- Table Content -->
         <x-slot:table>
             @foreach ($this->items as $index => $item)
                 @php
-                    if ($item->operational_status == 'closed') {
-                        $slaService = new \App\Services\SlaService($item);
-                        dd($slaService->getAgentL2());
-                    }
+                    $slaService = new \App\Services\SlaService($item);
                 @endphp
                 <tr>
                     <td>
@@ -55,7 +52,19 @@
                         {{ $item->title }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {{ $item->agent->name ?? '-' }}
+                        @php
+                            $agentL1 = $slaService->getAgentL1();
+                        @endphp
+                        Name: {{ $agentL1['agent'] ?? '-' }} <br>
+                        Response Time: {{ $agentL1['response_time_formated'] ?? '-' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                        @php
+                            $agentL2 = $slaService->getAgentL2();
+                        @endphp
+                        Name: {{ $agentL2['agent'] ?? '-' }} <br>
+                        Response Time: {{ $agentL2['response_time_formated'] ?? '-' }} <br>
+                        Resolution Time: {{ $agentL2['resolution_time_formated'] ?? '-' }}
                     </td>
                 </tr>
             @endforeach
