@@ -3,6 +3,12 @@
         <!-- Table Content -->
         <x-slot:table>
             @foreach ($this->items as $index => $item)
+                @php
+                    if ($item->operational_status == 'closed') {
+                        $slaService = new \App\Services\SlaService($item);
+                        dd($slaService->getAgentL2());
+                    }
+                @endphp
                 <tr>
                     <td>
                         <div class="m-5">

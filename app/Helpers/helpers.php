@@ -35,27 +35,6 @@ function option_is_match($key, $id)
     return key_option($key) === $id;
 }
 
-/* user */
-function is_administrator()
-{
-    $user = auth()->user();
-
-    return $user->hasRole('administrator');
-}
-
-function is_sekdes()
-{
-    $user = auth()->user();
-    if ($user->hasRole('operator')) {
-        if ($user->staff()->position_type_id == key_option('sekretaris_desa')) {
-            return true;
-        }
-
-    }
-
-    return false;
-}
-
 function months()
 {
     $months = [
@@ -99,20 +78,6 @@ function format_rupiah($number) {
     return 'Rp. ' . number_format($number, 0, ',', '.');
 }
 
-function schedule_is_open() {
-    $startDate = option_get_name('jadwal_semester_buka');
-    $endDate = option_get_name('jadwal_semester_tutup');
-    
-    // Mengubah string tanggal menjadi format DateTime
-    $start = new DateTime($startDate);
-    $end = new DateTime($endDate);
-    $today = new DateTime(); // Tanggal hari ini
-    
-    // Mengecek apakah hari ini termasuk dalam rentang tanggal
-    return ($today >= $start && $today <= $end);
-}
-
-/* sisegar */
 function generate_hex_color()
 {
     // Generate a random number between 0 and 16777215 (decimal representation of #FFFFFF)
@@ -120,4 +85,33 @@ function generate_hex_color()
 
     // Convert the number to a hexadecimal value and pad it to 6 characters
     return sprintf("#%06X", $randomColor);
+}
+
+/* menghitung selisih detik antara dua tanggal */
+function get_time_diff_inseconds($date1, $date2) {
+    $timestamp1 = strtotime($date1);
+    $timestamp2 = strtotime($date2);
+
+    return abs($timestamp2 - $timestamp1); // Returns absolute difference in seconds
+}
+
+function convert_seconds($seconds = 0)
+{
+    if ($seconds < 0) {
+        return 0 ."s";
+    }
+    
+    $hours = floor($seconds / 3600);
+    $minutes = floor(($seconds / 60) % 60);
+    $seconds = $seconds % 60;
+
+    if ($hours) {
+        return $hours . "h" . $minutes . "m" . $seconds % 60 . "s";
+    }
+
+    if ($minutes) {
+        return $minutes . "m" . $seconds % 60 . "s";
+    }
+
+    return $seconds % 60 . "s";
 }

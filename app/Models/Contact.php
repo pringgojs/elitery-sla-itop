@@ -43,4 +43,9 @@ class Contact extends Model
     {
         $q->where('finalClass', 'Person');
     }
+
+    public function getFullName()
+    {
+        return $this->person->first_name . ' '. $this->name;
+    }
 }

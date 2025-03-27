@@ -22,9 +22,11 @@ class Ticket extends Model
         return $this->belongsTo(Organization::class, 'org_id');
     }
 
-    /**
-     * Relasi ke model Contact dengan foreign key agent_id.
-     */
+    public function ticketRequest()
+    {
+        return $this->hasOne(TicketRequest::class, 'id', 'id');
+    }
+
     public function agent()
     {
         return $this->belongsTo(Contact::class, 'agent_id');
@@ -35,44 +37,18 @@ class Ticket extends Model
         return $this->belongsTo(Contact::class, 'team_id');
     }
 
-    /**
-     * Relasi ke model Contact dengan foreign key agent_id.
-     */
     public function caller()
     {
         return $this->belongsTo(Contact::class, 'caller_id');
     }
 
-    public function getPrivateLog() {
-        $text = $this->private_log;
-
-        $pattern = '/========== ([\d-]+\s[\d:]+) : (.*?) \((\d+)\) ============\n\n(.+?)(?=\n==========|\z)/s';
-        preg_match_all($pattern, $text, $matches, PREG_SET_ORDER);
-    
-        $result = [];
-        foreach ($matches as $match) {
-            $result[] = [
-                'timestamp' => $match[1],  // Waktu pesan
-                'name' => $match[2],       // Nama pengirim
-                'agent_id' => (int) $match[3],  // ID agen
-                'message' => trim($match[4]),   // Isi pesan (bisa mengandung HTML)
-            ];
+    public function scopeRef($q, $ref)
+    {
+        if (! $ref) {
+            return;
         }
-    
-        return $result;
-    }
 
-    public function getPrivateLogIndex() {
-        $serializedString = $this->private_log_index;
-        // Unserialize data
-        $data = unserialize($serializedString);
-    
-        // Pastikan data hasil unserialize berupa array
-        if (!is_array($data)) {
-            return [];
-        }
-    
-        return $data;
+        $q->where('ref', $ref);
     }
 
     public function scopeSearch($q, $search = null)
@@ -90,7 +66,6 @@ class Ticket extends Model
         $q->orderBy('start_date', 'desc');
     }
 
-    /* scope filter */
     public function scopeFilter($q, $params = [])
     {
         if (!$params) return;
@@ -159,8 +134,39 @@ class Ticket extends Model
             return '<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-500 text-white">Closed</span>';
         }
 
-        return '<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-500 text-white">'.$this->operational_status.'</span>
-';
-
+        return '<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-500 text-white">'.$this->operational_status.'</span>';
     }
+    
+    public function getPrivateLog() {
+        $text = $this->private_log;
+
+        $pattern = '/========== ([\d-]+\s[\d:]+) : (.*?) \((\d+)\) ============\n\n(.+?)(?=\n==========|\z)/s';
+        preg_match_all($pattern, $text, $matches, PREG_SET_ORDER);
+    
+        $result = [];
+        foreach ($matches as $match) {
+            $result[] = [
+                'timestamp' => $match[1],  // Waktu pesan
+                'name' => $match[2],       // Nama pengirim
+                'agent_id' => (int) $match[3],  // ID agen
+                'message' => trim($match[4]),   // Isi pesan (bisa mengandung HTML)
+            ];
+        }
+    
+        return $result;
+    }
+
+    public function getPrivateLogIndex() {
+        $serializedString = $this->private_log_index;
+        // Unserialize data
+        $data = unserialize($serializedString);
+    
+        // Pastikan data hasil unserialize berupa array
+        if (!is_array($data)) {
+            return [];
+        }
+    
+        return $data;
+    }
+
 }
