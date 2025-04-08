@@ -456,7 +456,7 @@
                     </div>
                 @endif
                 <div class="relative flex items-center space-x-1">
-                    <button class="hidden" x-ref="btnFilter" @click.debounce.5000ms="gas()"></button>
+                    <button class="hidden" x-ref="btnFilter" @click.debounce.6000ms="gas()"></button>
                     <button class="hidden" x-ref="btnGas"
                         wire:click="$dispatchTo('{{ $table }}', 'filter', {
                         search,
@@ -548,56 +548,6 @@
                     </button>
                 </span>
             </template>
-
-            {{-- <x-bi-dot v-show="selectedDistrictName.length > 0" class="size-8 shrink-0" /> --}}
-
-            {{-- <template x-show="selectedDistrictName"> --}}
-            <template x-for="dst in selectedOrganizationName">
-                <span
-                    class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    <p x-html="dst.name"></p>
-                    <button type="button" @click="addSelectedOrganization(dst);doFilter()"
-                        class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                        <span class="sr-only">Remove badge</span>
-                        <x-ionicon-close-outline class="shrink-0 size-3" />
-                    </button>
-                </span>
-            </template>
-            <template x-for="dst in selectedCallerName">
-                <span
-                    class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    <p x-html="dst.name"></p>
-                    <button type="button" @click="addSelectedCaller(dst);doFilter()"
-                        class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                        <span class="sr-only">Remove badge</span>
-                        <x-ionicon-close-outline class="shrink-0 size-3" />
-                    </button>
-                </span>
-            </template>
-
-            <template x-for="vlg in selectedTeamName">
-                <span
-                    class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    <p x-html="vlg.name"></p>
-                    <button type="button" @click="addSelectedTeam(vlg);doFilter()"
-                        class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                        <span class="sr-only">Remove badge</span>
-                        <x-ionicon-close-outline class="shrink-0 size-3" />
-                    </button>
-                </span>
-            </template>
-
-            <template x-for="vlg in selectedAgentName">
-                <span
-                    class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    <p x-html="vlg.name"></p>
-                    <button type="button" @click="addSelectedAgent(vlg);doFilter()"
-                        class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                        <span class="sr-only">Remove badge</span>
-                        <x-ionicon-close-outline class="shrink-0 size-3" />
-                    </button>
-                </span>
-            </template>
         </div>
 
         <script>
@@ -636,11 +586,13 @@
                         // Livewire.hook('morph.updating', () => this.loading = true);
                         // Livewire.hook('morph.updated', () => this.loading = false);
                     },
-
+                    topTenOrganizations() {
+                        return this.organizations.slice(0, 10);
+                    },
                     /* filtered activity type */
                     get filteredOrganizations() {
                         if (this.searchOrganization === "") {
-                            return this.organizations; // Jika input kosong, tampilkan semua data
+                            return this.topTenOrganizations(); // Jika input kosong, tampilkan semua data
                         }
 
                         let filtered = this.organizations.filter((item) =>
@@ -676,9 +628,12 @@
                     },
 
                     /* filtered seed type */
+                    topTenCallers() {
+                        return this.callers.slice(0, 10);
+                    },
                     get filteredCallers() {
                         if (this.searchCaller === "") {
-                            return this.callers; // Jika input kosong, tampilkan semua data
+                            return this.topTenCallers(); // Jika input kosong, tampilkan semua data
                         }
 
                         let filtered = this.callers.filter((item) =>
@@ -690,15 +645,15 @@
                         return filtered;
                     },
                     addSelectedCaller(i) {
-                        let index = this.i.findIndex(item =>
+                        let index = this.selectedCaller.findIndex(item =>
                             item == i.id
                         );
 
                         if (index !== -1) {
-                            this.i.splice(index, 1);
+                            this.selectedCaller.splice(index, 1);
                             this.selectedCallerName.splice(index, 1);
                         } else {
-                            this.i.push(i.id)
+                            this.selectedCaller.push(i.id)
                             this.selectedCallerName.push(i)
                         }
                     },
@@ -714,10 +669,13 @@
                         return false;
                     },
 
-                    /* filtered budget source */
+                    /* filtered team */
+                    topTenTeams() {
+                        return this.teams.slice(0, 10);
+                    },
                     get filteredTeams() {
                         if (this.searchTeam === "") {
-                            return this.teams; // Jika input kosong, tampilkan semua data
+                            return this.topTenTeams(); // Jika input kosong, tampilkan semua data
                         }
 
                         let filtered = this.teams.filter((item) =>
@@ -729,15 +687,15 @@
                         return filtered;
                     },
                     addSelectedTeam(i) {
-                        let index = this.i.findIndex(item =>
+                        let index = this.selectedTeam.findIndex(item =>
                             item == i.id
                         );
 
                         if (index !== -1) {
-                            this.i.splice(index, 1);
+                            this.selectedTeam.splice(index, 1);
                             this.selectedTeamName.splice(index, 1);
                         } else {
-                            this.i.push(i.id)
+                            this.selectedTeam.push(i.id)
                             this.selectedTeamName.push(i)
                         }
                     },
@@ -753,10 +711,13 @@
                         return false;
                     },
 
-                    /* filtered seed source */
+                    /* filtered agents */
+                    topTenAgents() {
+                        return this.agents.slice(0, 10);
+                    },
                     get filteredAgent() {
                         if (this.searchAgent === "") {
-                            return this.agents; // Jika input kosong, tampilkan semua data
+                            return this.topTenAgents(); // Jika input kosong, tampilkan semua data
                         }
 
                         let filtered = this.agents.filter((item) =>
@@ -768,15 +729,15 @@
                         return filtered;
                     },
                     addSelectedAgent(i) {
-                        let index = this.i.findIndex(item =>
+                        let index = this.selectedAgent.findIndex(item =>
                             item == i.id
                         );
 
                         if (index !== -1) {
-                            this.i.splice(index, 1);
+                            this.selectedAgent.splice(index, 1);
                             this.selectedAgentName.splice(index, 1);
                         } else {
-                            this.i.push(i.id)
+                            this.selectedAgent.push(i.id)
                             this.selectedAgentName.push(i)
                         }
                     },
