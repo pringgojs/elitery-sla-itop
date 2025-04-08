@@ -51,8 +51,8 @@
             <div class="text-center">
                 <div>
                     <a class="flex-none text-xl font-semibold text-black dark:text-white" href="#"
-                        aria-label="Brand">PEMERINTAH KABUPATEN PONOROGO<br>
-                        <span class="text-lg">DINAS LINGKUNGAN HIDUP</span>
+                        aria-label="Brand">PT. Data Sinergitama Jaya Tbk. <br>
+                        {{-- <span class="text-lg">DINAS LINGKUNGAN HIDUP</span> --}}
                     </a>
                 </div>
                 <!-- End Col -->
@@ -60,7 +60,7 @@
                 <div class="mt-3">
                     <p class="text-gray-500 dark:text-neutral-500">Crafted with ❤️ by <a
                             class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-                            href="https://pringgojs.com/">DINAS KOMINFO PONOROGO</a> </p>
+                            href="https://elitery.com/">RnD Team</a></p>
                     <p class="text-gray-500 dark:text-neutral-500">
                         © {{ date('Y') }}
                     </p>
