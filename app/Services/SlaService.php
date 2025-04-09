@@ -20,38 +20,16 @@ class SlaService
 
     public function getAgentL1()
     {
-        /* Agent L1 diambil dari siapa yg pertama kali meresponse baik itu di public log atau private log */
         $publicLog = $this->ticketRequest->getPublicLogIndex();
         $privateLog = $this->ticket->getPrivateLogIndex();
 
         if (!$publicLog && !$privateLog) return [];
-        
-        $date = null;
-        /* agent pertama berapa di index pertama. */
-        if (!$publicLog && $privateLog) {
-            $item = $privateLog[0];
-            
-            $date = $this->formatDateToTimezone($item['date']);
-            $agent = $item['user_name'];
-        } else if ($publicLog && !$privateLog) {
-            $item = $publicLog[0];
-            
-            $date = $this->formatDateToTimezone($item['date']);
-            $agent = $item['user_name'];
-        } else if ($publicLog && $privateLog) {
-            $itemPublic = $publicLog[0];
-            $itemPrivate = $privateLog[0];
 
-            if ($itemPublic['date'] < $itemPrivate['date']) {
-                $date = $this->formatDateToTimezone($itemPublic['date']);
-                $agent = $itemPublic['user_name'];
-            } else {
-                $date = $this->formatDateToTimezone($itemPrivate['date']);
-                $agent = $itemPrivate['user_name'];
-            }
-        }
+        $firstLog = $this->getFirstLog($publicLog, $privateLog);
+        if (!$firstLog) return [];
 
-        if (!$date) return [];
+        $date = $this->formatDateToTimezone($firstLog['date']);
+        $agent = $firstLog['user_name'];
 
         return [
             'ref' => $this->ticket->ref,
@@ -79,29 +57,23 @@ class SlaService
          */
 
         $firstAgentResponse = $this->getAgentL1();
-
         if (!$firstAgentResponse) return [];
-        
+
         $firstAgentResponseDate = $firstAgentResponse['date_end'];
-        
         $assignmentDate = $this->ticketRequest->assignment_date ?? null;
-        
         if (!$assignmentDate) return [];
 
-        /* response time */
         $responseTime = get_time_diff_inseconds($firstAgentResponseDate, $assignmentDate);
 
-        /* resolution time */
         $totalPendingTime = $this->ticketRequest->cumulatedpending_timespent ?? 0;
         $resolutionDate = $this->ticketRequest->resolution_date ?? null;
-        $resolutionTime = 0;
-        if ($resolutionDate) {
-            $resolutionTime = get_time_diff_inseconds($assignmentDate, $resolutionDate) - $totalPendingTime;
-        }
+        $resolutionTime = $resolutionDate
+            ? get_time_diff_inseconds($assignmentDate, $resolutionDate) - $totalPendingTime
+            : 0;
 
         return [
             'ref' => $this->ticket->ref,
-            'agent' => $this->ticket->agent->getFullName(), // agent bisa diambil dari kolom agent di tiket karena itu adalah agen yg aktif
+            'agent' => $this->ticket->agent->getFullName(),
             'response_time' => $responseTime,
             'response_time_formated' => convert_seconds($responseTime),
             'resolution_time' => $resolutionTime,
@@ -109,11 +81,18 @@ class SlaService
         ];
     }
 
-    /* mengubah timestamp Unix ke UTC + 7  */
+    private function getFirstLog($publicLog, $privateLog)
+    {
+        if (!$publicLog) return $privateLog[0] ?? null;
+        if (!$privateLog) return $publicLog[0] ?? null;
+
+        return $publicLog[0]['date'] < $privateLog[0]['date'] ? $publicLog[0] : $privateLog[0];
+    }
+
     private function formatDateToTimezone($date)
     {
-        return Carbon::createFromTimestamp($date, 'UTC') // Ambil sebagai UTC
-        ->setTimezone('Asia/Jakarta') // Ubah ke UTC+7
-        ->format('Y-m-d H:i:s');
+        return Carbon::createFromTimestamp($date, 'UTC')
+            ->setTimezone('Asia/Jakarta')
+            ->format('Y-m-d H:i:s');
     }
 }
