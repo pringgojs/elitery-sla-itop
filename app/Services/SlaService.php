@@ -16,24 +16,31 @@ class SlaService
     {
         $this->ticket = $ticket;
         $this->ticketRequest = $this->ticket->ticketRequest ?? null;
+
+        if (!$this->ticketRequest) return []; // Jika tidak ada ticket request, return array kosong
     }
 
     public function getAgentL1()
     {
+        if (!$this->ticketRequest) return [];
+        // dd($publicLog = $this->ticketRequest->getPublicLogIndex());
         $publicLog = $this->ticketRequest->getPublicLogIndex();
         $privateLog = $this->ticket->getPrivateLogIndex();
 
         if (!$publicLog && !$privateLog) return [];
 
         $firstLog = $this->getFirstLog($publicLog, $privateLog);
+
         if (!$firstLog) return [];
 
         $date = $this->formatDateToTimezone($firstLog['date']);
         $agent = $firstLog['user_name'];
+        $agent_id = $firstLog['user_id'];
 
         return [
             'ref' => $this->ticket->ref,
             'agent' => $agent,
+            'agent_id' => $agent_id,
             'response_time' => get_time_diff_inseconds($this->ticket->start_date, $date),
             'response_time_formated' => convert_seconds(get_time_diff_inseconds($this->ticket->start_date, $date)),
             'date_start' => $this->ticket->start_date,
@@ -73,6 +80,7 @@ class SlaService
 
         return [
             'ref' => $this->ticket->ref,
+            'agent_id' => $this->ticket->agent_id,
             'agent' => $this->ticket->agent->getFullName(),
             'response_time' => $responseTime,
             'response_time_formated' => convert_seconds($responseTime),

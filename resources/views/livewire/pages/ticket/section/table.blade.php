@@ -7,6 +7,7 @@
             @foreach ($this->items as $index => $item)
                 @php
                     $slaService = new \App\Services\SlaService($item);
+                    // dd($slaService->getAgentL1());
                 @endphp
                 <tr>
                     <td>

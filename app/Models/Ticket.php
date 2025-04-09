@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Constants\Constants;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -13,6 +14,19 @@ class Ticket extends Model
     protected $connection = 'mysql2'; // Menggunakan koneksi mysql2
 
     protected $table = 'ticket'; // Nama tabel
+
+    public $timestamps = false;
+    
+    protected $fillable = [
+        'agent_l1_id',
+        'agent_l1_name',
+        'agent_l1_response_time',
+        'agent_l2_id',
+        'agent_l2_name',
+        'agent_l2_response_time',
+        'agent_l2_resolution_time',
+        'sla_last_check',
+    ];
 
     /**
      * Relasi ke model Organization dengan foreign key org_id.
@@ -126,6 +140,16 @@ class Ticket extends Model
         if ($type == 'date-range') {
             $q->whereBetween('start_date', [$data['dateStart'], $data['dateEnd']]);
         }
+    }
+
+    public function scopeOpen($q)
+    {
+        $q->where('operational_status', Constants::TICKET_ONGOING);
+    }
+
+    public function scopeClosed($q)
+    {
+        $q->where('operational_status', Constants::TICKET_CLOSED);
     }
 
     public function status()
