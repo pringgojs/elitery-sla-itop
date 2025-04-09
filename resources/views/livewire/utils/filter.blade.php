@@ -472,54 +472,20 @@
             </div>
         </div>
         <div class="flex mb-5">
-            {{-- Filter: --}}
+            {{-- Filter --}}
 
-            <template x-for="item in selected.organization">
-                <span
-                    class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    <p x-html="item.name"></p>
-                    <button type="button" @click="toggleSelection('organization', item)"
-                        class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                        <span class="sr-only">Remove badge</span>
-                        <x-ionicon-close-outline class="shrink-0 size-3" />
-                    </button>
-                </span>
-            </template>
-
-            <template x-for="item in selected.caller">
-                <span
-                    class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    <p x-html="item.name"></p>
-                    <button type="button" @click="toggleSelection('caller', item)"
-                        class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                        <span class="sr-only">Remove badge</span>
-                        <x-ionicon-close-outline class="shrink-0 size-3" />
-                    </button>
-                </span>
-            </template>
-
-            <template x-for="item in selected.team">
-                <span
-                    class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    <p x-html="item.name"></p>
-                    <button type="button" @click="toggleSelection('team', item)"
-                        class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                        <span class="sr-only">Remove badge</span>
-                        <x-ionicon-close-outline class="shrink-0 size-3" />
-                    </button>
-                </span>
-            </template>
-
-            <template x-for="item in selected.agent">
-                <span
-                    class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    <p x-html="item.name"></p>
-                    <button type="button" @click="toggleSelection('agent', item)"
-                        class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                        <span class="sr-only">Remove badge</span>
-                        <x-ionicon-close-outline class="shrink-0 size-3" />
-                    </button>
-                </span>
+            <template x-for="(items, type) in selected" :key="type">
+                <template x-for="item in items" :key="item.id">
+                    <span
+                        class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
+                        <p x-html="item.name"></p>
+                        <button type="button" @click="toggleSelection(type, item)"
+                            class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
+                            <span class="sr-only">Remove badge</span>
+                            <x-ionicon-close-outline class="shrink-0 size-3" />
+                        </button>
+                    </span>
+                </template>
             </template>
 
             {{-- date --}}

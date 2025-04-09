@@ -57,8 +57,8 @@ class Ticket extends Model
             return;
         }
 
-        $q->where('ref', 'like', '%'.$search.'%')
-            ->orWhere('title', 'like', '%'.$search.'%');
+        $q->where('ref', 'like', '%'.trim($search).'%')
+            ->orWhere('title', 'like', '%'.trim($search).'%');
     }
 
     public function scopeOrderByDefault($q)
