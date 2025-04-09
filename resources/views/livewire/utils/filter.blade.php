@@ -28,7 +28,7 @@
                                         class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
                                         <div id="hs-dropdown-organization"
                                             class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            :class="selectedOrganizationName.length > 0 ? 'bg-green-100' : ''"
+                                            :class="selected.organization.length > 0 ? 'bg-green-100' : ''"
                                             href="#">
                                             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -45,7 +45,7 @@
                                             <div class="p-1 space-y-1">
                                                 <div class="max-w-sm">
                                                     <div class="relative">
-                                                        <input type="text" x-model="searchOrganization"
+                                                        <input type="text" x-model="searchFields.organization"
                                                             class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                             placeholder="Cari...">
                                                         <div
@@ -61,10 +61,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="overflow-y-scroll max-h-48 space-y-0.5 ">
-                                                    <template x-for="item in filteredOrganizations">
-                                                        <a @click="addSelectedOrganization(item);doFilter()"
+                                                    <template x-for="item in getFilteredData('organization')">
+                                                        <a @click="toggleSelection('organization', item)"
                                                             class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                                                            :class="checkInSelectedOrganization(item.id) ? 'bg-green-100' : ''"
+                                                            :class="isSelected('organization', item.id) ? 'bg-green-100' : ''"
                                                             href="#" x-text="item.name">
                                                         </a>
                                                     </template>
@@ -78,7 +78,7 @@
                                         class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
                                         <div id="hs-dropdown-caller"
                                             class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            :class="selectedCallerName.length > 0 ? 'bg-green-100' : ''" href="#">
+                                            :class="selected.caller.length > 0 ? 'bg-green-100' : ''" href="#">
                                             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                 stroke="currentColor" class="size-6">
@@ -94,7 +94,7 @@
                                             <div class="p-1 space-y-1">
                                                 <div class="max-w-sm">
                                                     <div class="relative">
-                                                        <input type="text" x-model="searchCaller"
+                                                        <input type="text" x-model="searchFields.caller"
                                                             class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                             placeholder="Cari...">
                                                         <div
@@ -110,10 +110,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="overflow-y-scroll max-h-48 space-y-0.5 ">
-                                                    <template x-for="item in filteredCallers">
-                                                        <a @click="addSelectedCaller(item);doFilter()"
+                                                    <template x-for="item in getFilteredData('caller')">
+                                                        <a @click="toggleSelection('caller', item)"
                                                             class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                                                            :class="checkInSelectedCaller(item.id) ? 'bg-green-100' : ''"
+                                                            :class="isSelected('caller', item.id) ? 'bg-green-100' : ''"
                                                             href="#" x-text="item.name">
                                                         </a>
                                                     </template>
@@ -128,7 +128,7 @@
                                         class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
                                         <div id="hs-dropdown-team"
                                             class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            :class="selectedTeamName.length > 0 ? 'bg-green-100' : ''" href="#">
+                                            :class="selected.team.length > 0 ? 'bg-green-100' : ''" href="#">
                                             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                 stroke="currentColor" class="size-6">
@@ -144,7 +144,7 @@
                                             <div class="p-1 space-y-1">
                                                 <div class="max-w-sm">
                                                     <div class="relative">
-                                                        <input type="text" x-model="searchTeam"
+                                                        <input type="text" x-model="searchFields.team"
                                                             class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                             placeholder="Cari...">
                                                         <div
@@ -160,10 +160,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="overflow-y-scroll max-h-48 space-y-0.5 ">
-                                                    <template x-for="item in filteredTeams">
-                                                        <a @click="addSelectedTeam(item);doFilter()"
+                                                    <template x-for="item in getFilteredData('team')">
+                                                        <a @click="toggleSelection('team', item)"
                                                             class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                                                            :class="checkInSelectedTeam(item.id) ? 'bg-green-100' : ''"
+                                                            :class="isSelected('team', item.id) ? 'bg-green-100' : ''"
                                                             href="#" x-text="item.name">
                                                         </a>
                                                     </template>
@@ -178,12 +178,12 @@
                                         class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
                                         <div id="hs-dropdown-agent"
                                             class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            :class="selectedAgentName.length > 0 ? 'bg-green-100' : ''" href="#">
+                                            :class="selected.agent.length > 0 ? 'bg-green-100' : ''" href="#">
                                             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                 stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                                                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745  0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
                                             </svg>
 
                                             Agent
@@ -194,7 +194,7 @@
                                             <div class="p-1 space-y-1">
                                                 <div class="max-w-sm">
                                                     <div class="relative">
-                                                        <input type="text" x-model="searchAgent"
+                                                        <input type="text" x-model="searchFields.agent"
                                                             class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                             placeholder="Cari...">
                                                         <div
@@ -210,10 +210,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="overflow-y-scroll max-h-48 space-y-0.5 ">
-                                                    <template x-for="item in filteredAgent">
-                                                        <a @click="addSelectedAgent(item);doFilter()"
+                                                    <template x-for="item in getFilteredData('agent')">
+                                                        <a @click="toggleSelection('agent', item)"
                                                             class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                                                            :class="checkInSelectedAgent(item.id) ? 'bg-green-100' : ''"
+                                                            :class="isSelected('agent', item.id) ? 'bg-green-100' : ''"
                                                             href="#" x-text="item.name">
                                                         </a>
                                                     </template>
@@ -243,7 +243,7 @@
                                                     d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
                                             </svg>
 
-                                            Totday
+                                            Today
                                         </a>
                                     @endif
                                     @if ($useDateThisMonth)
@@ -460,18 +460,13 @@
                     <button class="hidden" x-ref="btnGas"
                         wire:click="$dispatchTo('{{ $table }}', 'filter', {
                         search,
-                        selectedOrganization,
-                        selectedCaller,
-                        selectedAgent,
-                        selectedTeam,
+                        selected,
                         dateType,
                         month,
                         year,
                         dateStart,
                         dateEnd
                     })">
-                        {{-- @click="$wire.filter(area, search, positionType, selectedDistrict, selectedVillage, positionStatus, isParkir, isNullPerson, statusData)"></button> --}}
-
                     </button>
                 </div>
             </div>
@@ -479,12 +474,11 @@
         <div class="flex mb-5">
             {{-- Filter: --}}
 
-            {{-- activity type --}}
-            <template x-for="item in selectedOrganizationName">
+            <template x-for="item in selected.organization">
                 <span
                     class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
                     <p x-html="item.name"></p>
-                    <button type="button" @click="addSelectedOrganization(item);doFilter()"
+                    <button type="button" @click="toggleSelection('organization', item)"
                         class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
                         <span class="sr-only">Remove badge</span>
                         <x-ionicon-close-outline class="shrink-0 size-3" />
@@ -492,12 +486,11 @@
                 </span>
             </template>
 
-            {{-- seed type --}}
-            <template x-for="item in selectedCallerName">
+            <template x-for="item in selected.caller">
                 <span
                     class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
                     <p x-html="item.name"></p>
-                    <button type="button" @click="addSelectedCaller(item);doFilter()"
+                    <button type="button" @click="toggleSelection('caller', item)"
                         class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
                         <span class="sr-only">Remove badge</span>
                         <x-ionicon-close-outline class="shrink-0 size-3" />
@@ -505,12 +498,11 @@
                 </span>
             </template>
 
-            {{-- budget source --}}
-            <template x-for="item in selectedTeamName">
+            <template x-for="item in selected.team">
                 <span
                     class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
                     <p x-html="item.name"></p>
-                    <button type="button" @click="addSelectedTeam(item);doFilter()"
+                    <button type="button" @click="toggleSelection('team', item)"
                         class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
                         <span class="sr-only">Remove badge</span>
                         <x-ionicon-close-outline class="shrink-0 size-3" />
@@ -518,12 +510,11 @@
                 </span>
             </template>
 
-            {{-- seed source --}}
-            <template x-for="item in selectedAgentName">
+            <template x-for="item in selected.agent">
                 <span
                     class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
                     <p x-html="item.name"></p>
-                    <button type="button" @click="addSelectedAgent(item);doFilter()"
+                    <button type="button" @click="toggleSelection('agent', item)"
                         class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
                         <span class="sr-only">Remove badge</span>
                         <x-ionicon-close-outline class="shrink-0 size-3" />
@@ -555,212 +546,57 @@
                 return {
                     search: '',
                     area: '',
-
-                    callers: @js($callers),
-                    organizations: @js($organizations),
-                    teams: @js($teams),
-                    agents: @js($agents),
-
-                    searchOrganization: '',
-                    searchCaller: '',
-                    searchAgent: '',
-                    searchTeam: '',
-
-                    selectedOrganization: [],
-                    selectedOrganizationName: [],
-                    selectedCaller: [],
-                    selectedCallerName: [],
-                    selectedAgent: [],
-                    selectedAgentName: [],
-                    selectedTeam: [],
-                    selectedTeamName: [],
-
-                    /* date */
+                    data: {
+                        callers: @js($callers),
+                        organizations: @js($organizations),
+                        teams: @js($teams),
+                        agents: @js($agents),
+                    },
+                    searchFields: {
+                        organization: '',
+                        caller: '',
+                        team: '',
+                        agent: '',
+                    },
+                    selected: {
+                        organization: [],
+                        caller: [],
+                        team: [],
+                        agent: [],
+                    },
                     dateType: @entangle('dateType'),
-                    showSelectMonth: false,
                     month: '',
                     year: '',
                     dateStart: '',
                     dateEnd: '',
                     init() {
-                        // Livewire.hook('morph.updating', () => this.loading = true);
-                        // Livewire.hook('morph.updated', () => this.loading = false);
+                        // Initialization logic if needed
                     },
-                    topTenOrganizations() {
-                        return this.organizations.slice(0, 10);
+                    getFilteredData(type) {
+                        const searchValue = this.searchFields[type].toLowerCase();
+                        const data = this.data[type + 's']; // Dynamically access data (e.g., callers, organizations)
+                        if (!searchValue) return data.slice(0, 10); // Return top 10 if no search value
+                        return data.filter(item => item.name.toLowerCase().includes(searchValue));
                     },
-                    /* filtered activity type */
-                    get filteredOrganizations() {
-                        if (this.searchOrganization === "") {
-                            return this.topTenOrganizations(); // Jika input kosong, tampilkan semua data
-                        }
-
-                        let filtered = this.organizations.filter((item) =>
-                            item.name
-                            .toLowerCase()
-                            .includes(this.searchOrganization.toLowerCase()));
-
-                        return filtered;
-                    },
-                    addSelectedOrganization(i) {
-                        let index = this.selectedOrganization.findIndex(item =>
-                            item == i.id
-                        );
-
+                    toggleSelection(type, item) {
+                        const selectedList = this.selected[type];
+                        const index = selectedList.findIndex(selected => selected.id === item.id);
                         if (index !== -1) {
-                            this.selectedOrganization.splice(index, 1);
-                            this.selectedOrganizationName.splice(index, 1);
+                            selectedList.splice(index, 1);
                         } else {
-                            this.selectedOrganization.push(i.id)
-                            this.selectedOrganizationName.push(i)
+                            selectedList.push(item);
                         }
+                        this.doFilter();
                     },
-                    checkInSelectedOrganization(value) {
-                        let index = this.selectedOrganization.findIndex(item =>
-                            item == value
-                        );
-
-                        if (index !== -1) {
-                            return true;
-                        }
-
-                        return false;
+                    isSelected(type, id) {
+                        return this.selected[type].some(item => item.id === id);
                     },
-
-                    /* filtered seed type */
-                    topTenCallers() {
-                        return this.callers.slice(0, 10);
-                    },
-                    get filteredCallers() {
-                        if (this.searchCaller === "") {
-                            return this.topTenCallers(); // Jika input kosong, tampilkan semua data
-                        }
-
-                        let filtered = this.callers.filter((item) =>
-                            item.name
-                            .toLowerCase()
-                            .includes(this.searchCaller.toLowerCase())
-                        );
-
-                        return filtered;
-                    },
-                    addSelectedCaller(i) {
-                        let index = this.selectedCaller.findIndex(item =>
-                            item == i.id
-                        );
-
-                        if (index !== -1) {
-                            this.selectedCaller.splice(index, 1);
-                            this.selectedCallerName.splice(index, 1);
-                        } else {
-                            this.selectedCaller.push(i.id)
-                            this.selectedCallerName.push(i)
-                        }
-                    },
-                    checkInSelectedCaller(value) {
-                        let index = this.selectedCaller.findIndex(item =>
-                            item == value
-                        );
-
-                        if (index !== -1) {
-                            return true;
-                        }
-
-                        return false;
-                    },
-
-                    /* filtered team */
-                    topTenTeams() {
-                        return this.teams.slice(0, 10);
-                    },
-                    get filteredTeams() {
-                        if (this.searchTeam === "") {
-                            return this.topTenTeams(); // Jika input kosong, tampilkan semua data
-                        }
-
-                        let filtered = this.teams.filter((item) =>
-                            item.name
-                            .toLowerCase()
-                            .includes(this.searchTeam.toLowerCase())
-                        );
-
-                        return filtered;
-                    },
-                    addSelectedTeam(i) {
-                        let index = this.selectedTeam.findIndex(item =>
-                            item == i.id
-                        );
-
-                        if (index !== -1) {
-                            this.selectedTeam.splice(index, 1);
-                            this.selectedTeamName.splice(index, 1);
-                        } else {
-                            this.selectedTeam.push(i.id)
-                            this.selectedTeamName.push(i)
-                        }
-                    },
-                    checkInSelectedTeam(value) {
-                        let index = this.selectedTeam.findIndex(item =>
-                            item == value
-                        );
-
-                        if (index !== -1) {
-                            return true;
-                        }
-
-                        return false;
-                    },
-
-                    /* filtered agents */
-                    topTenAgents() {
-                        return this.agents.slice(0, 10);
-                    },
-                    get filteredAgent() {
-                        if (this.searchAgent === "") {
-                            return this.topTenAgents(); // Jika input kosong, tampilkan semua data
-                        }
-
-                        let filtered = this.agents.filter((item) =>
-                            item.name
-                            .toLowerCase()
-                            .includes(this.searchAgent.toLowerCase())
-                        );
-
-                        return filtered;
-                    },
-                    addSelectedAgent(i) {
-                        let index = this.selectedAgent.findIndex(item =>
-                            item == i.id
-                        );
-
-                        if (index !== -1) {
-                            this.selectedAgent.splice(index, 1);
-                            this.selectedAgentName.splice(index, 1);
-                        } else {
-                            this.selectedAgent.push(i.id)
-                            this.selectedAgentName.push(i)
-                        }
-                    },
-                    checkInSelectedAgent(value) {
-                        let index = this.selectedAgent.findIndex(item =>
-                            item == value
-                        );
-
-                        if (index !== -1) {
-                            return true;
-                        }
-
-                        return false;
-                    },
-
                     doFilter() {
-                        // return;
-                        console.log('do filter');
+                        console.log('Filtering...');
                         this.$refs.btnFilter.click();
                     },
-
                     gas() {
-                        console.log('gass');
+                        console.log('Applying filter...');
                         this.$refs.btnGas.click();
                     }
                 };

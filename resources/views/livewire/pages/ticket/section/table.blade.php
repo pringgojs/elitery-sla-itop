@@ -1,4 +1,6 @@
 <div>
+    <span class=" bg-teal-500 "></span>
+    <span class="bg-yellow-500"></span>
     <x-table :headers="['Action', 'Created At', 'Organization', 'Title', 'Agent L1', 'Agent L2']" title="Ticket">
         <!-- Table Content -->
         <x-slot:table>

@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 use Maatwebsite\Excel\Excel;
 use Livewire\Attributes\Computed;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use App\Helpers\ArrayHelper;
 
 class Table extends Component
 {
@@ -38,22 +39,22 @@ class Table extends Component
     #[On('filter')]
     public function filter(
         $search = null,
-        $selectedOrg = null,
-        $selectedCaller = null,
-        $selectedAgent = null,
-        $selectedTeam = null,
+        $selected = null,
         $dateType = null,
         $month = null,
         $year = null,
         $dateStart = null,
         $dateEnd = null
     ) {
+
+        $filteredItem = ArrayHelper::extractIds($selected);
+
         $params = [
             'search' => $search,
-            'selectedOrg' => $selectedOrg,
-            'selectedCaller' => $selectedCaller,
-            'selectedAgent' => $selectedAgent,
-            'selectedTeam' => $selectedTeam,
+            'selectedOrg' => $filteredItem['organization'] ?? [],
+            'selectedCaller' => $organization = $filteredItem['caller'] ?? [],
+            'selectedAgent' => $filteredItem['agent'] ?? [],
+            'selectedTeam' => $filteredItem['team'] ?? [],
             'dateType' => $dateType,
             'month' => $month,
             'year' => $year,
