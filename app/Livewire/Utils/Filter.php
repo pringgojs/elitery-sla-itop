@@ -52,6 +52,7 @@ class Filter extends Component
     public $useSearch = false;
     
     public $useDownload = false;
+
     
     public function mount($table, $positionType = null)
     {
@@ -60,8 +61,6 @@ class Filter extends Component
         $this->callers = Contact::select(['contact.id', 'contact.name'])->get();
         $this->teams = Contact::classTeam()->select(['contact.id', 'contact.name'])->get();
         $this->agents = Contact::classPerson()->select(['contact.id', 'contact.name'])->get();
-        // dd($this);
-
         $this->table = $table;
     }
 

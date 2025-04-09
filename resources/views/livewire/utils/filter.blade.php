@@ -22,206 +22,73 @@
                                 class="block pt-2 pb-1 px-3 text-xs font-medium uppercase text-gray-400 dark:text-neutral-500">
                                 Category
                             </span>
-                            <div class="max-h-auto space-y-0.5 ">
-                                @if ($useOrganization)
-                                    <div
-                                        class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
-                                        <div id="hs-dropdown-organization"
-                                            class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            :class="selected.organization.length > 0 ? 'bg-green-100' : ''"
-                                            href="#">
-                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-                                            </svg>
+                            <div class="max-h-auto space-y-0.5">
+                                @php
 
-                                            Organization
-                                        </div>
-                                        <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 relative md:w-48 hidden z-10 md:mt-2 md:!mx-[10px] md:top-0 md:start-full ps-7 md:ps-0 md:bg-white md:rounded-lg md:shadow-md dark:bg-neutral-800 dark:divide-neutral-700 before:hidden md:before:block before:absolute before:-end-5 before:top-0 before:h-full before:w-5 md:after:hidden after:absolute after:top-1 after:start-[18px] after:w-0.5 after:h-[calc(100%-0.25rem)] after:bg-gray-100 dark:md:bg-neutral-800 dark:after:bg-neutral-700"
-                                            role="menu" aria-orientation="vertical"
-                                            aria-labelledby="hs-dropdown-organization">
-                                            <div class="p-1 space-y-1">
-                                                <div class="max-w-sm">
-                                                    <div class="relative">
-                                                        <input type="text" x-model="searchFields.organization"
-                                                            class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                            placeholder="Cari...">
-                                                        <div
-                                                            class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-                                                            <svg class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
-                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor" class="size-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                                            </svg>
+                                    $categories = [
+                                        [
+                                            'type' => 'organization',
+                                            'condition' => $useOrganization,
+                                            'label' => 'Organization',
+                                        ],
+                                        ['type' => 'caller', 'condition' => $useCaller, 'label' => 'Caller'],
+                                        ['type' => 'team', 'condition' => $useTeam, 'label' => 'Team'],
+                                        ['type' => 'agent', 'condition' => $useAgent, 'label' => 'Agent'],
+                                    ];
+                                @endphp
+                                @foreach ($categories as $filter)
+                                    @if ($filter['condition'])
+                                        <div
+                                            class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
+                                            <div id="hs-dropdown-{{ $filter['type'] }}"
+                                                class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                                                :class="selected.{{ $filter['type'] }}.length > 0 ? 'bg-green-100' : ''">
+                                                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1-1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                                                </svg>
+                                                {{ $filter['label'] }}
+                                            </div>
+                                            <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 relative md:w-48 hidden z-10 md:mt-2 md:!mx-[10px] md:top-0 md:start-full ps-7 md:ps-0 md:bg-white md:rounded-lg md:shadow-md dark:bg-neutral-800 dark:divide-neutral-700 before:hidden md:before:block before:absolute before:-end-5 before:top-0 before:h-full before:w-5 md:after:hidden after:absolute after:top-1 after:start-[18px] after:w-0.5 after:h-[calc(100%-0.25rem)] after:bg-gray-100 dark:md:bg-neutral-800 dark:after:bg-neutral-700"
+                                                role="menu" aria-orientation="vertical"
+                                                aria-labelledby="hs-dropdown-{{ $filter['type'] }}">
+                                                <div class="p-1 space-y-1">
+                                                    <div class="max-w-sm">
+                                                        <div class="relative">
+                                                            <input type="text"
+                                                                x-model="searchFields.{{ $filter['type'] }}"
+                                                                class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                                placeholder="Search...">
+                                                            <div
+                                                                class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                                                                <svg class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="size-6">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                                                </svg>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="overflow-y-scroll max-h-48 space-y-0.5 ">
-                                                    <template x-for="item in getFilteredData('organization')">
-                                                        <a @click="toggleSelection('organization', item)"
-                                                            class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                                                            :class="isSelected('organization', item.id) ? 'bg-green-100' : ''"
-                                                            href="#" x-text="item.name">
-                                                        </a>
-                                                    </template>
+                                                    <div class="overflow-y-scroll max-h-48 space-y-0.5">
+                                                        <template
+                                                            x-for="item in getFilteredData('{{ $filter['type'] }}')">
+                                                            <a @click="toggleSelection('{{ $filter['type'] }}', item)"
+                                                                class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
+                                                                :class="isSelected('{{ $filter['type'] }}', item.id) ?
+                                                                    'bg-green-100' : ''"
+                                                                href="#" x-text="item.name">
+                                                            </a>
+                                                        </template>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endif
-                                @if ($useCaller)
-                                    <div
-                                        class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
-                                        <div id="hs-dropdown-caller"
-                                            class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            :class="selected.caller.length > 0 ? 'bg-green-100' : ''" href="#">
-                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-                                            </svg>
-
-                                            Caller
-                                        </div>
-                                        <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 relative md:w-48 hidden z-10 md:mt-2 md:!mx-[10px] md:top-0 md:start-full ps-7 md:ps-0 md:bg-white md:rounded-lg md:shadow-md dark:bg-neutral-800 dark:divide-neutral-700 before:hidden md:before:block before:absolute before:-end-5 before:top-0 before:h-full before:w-5 md:after:hidden after:absolute after:top-1 after:start-[18px] after:w-0.5 after:h-[calc(100%-0.25rem)] after:bg-gray-100 dark:md:bg-neutral-800 dark:after:bg-neutral-700"
-                                            role="menu" aria-orientation="vertical"
-                                            aria-labelledby="hs-dropdown-caller">
-                                            <div class="p-1 space-y-1">
-                                                <div class="max-w-sm">
-                                                    <div class="relative">
-                                                        <input type="text" x-model="searchFields.caller"
-                                                            class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                            placeholder="Cari...">
-                                                        <div
-                                                            class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-                                                            <svg class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
-                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor" class="size-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="overflow-y-scroll max-h-48 space-y-0.5 ">
-                                                    <template x-for="item in getFilteredData('caller')">
-                                                        <a @click="toggleSelection('caller', item)"
-                                                            class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                                                            :class="isSelected('caller', item.id) ? 'bg-green-100' : ''"
-                                                            href="#" x-text="item.name">
-                                                        </a>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
-                                @if ($useTeam)
-                                    <div
-                                        class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
-                                        <div id="hs-dropdown-team"
-                                            class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            :class="selected.team.length > 0 ? 'bg-green-100' : ''" href="#">
-                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-                                            </svg>
-
-                                            Team
-                                        </div>
-                                        <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 relative md:w-48 hidden z-10 md:mt-2 md:!mx-[10px] md:top-0 md:start-full ps-7 md:ps-0 md:bg-white md:rounded-lg md:shadow-md dark:bg-neutral-800 dark:divide-neutral-700 before:hidden md:before:block before:absolute before:-end-5 before:top-0 before:h-full before:w-5 md:after:hidden after:absolute after:top-1 after:start-[18px] after:w-0.5 after:h-[calc(100%-0.25rem)] after:bg-gray-100 dark:md:bg-neutral-800 dark:after:bg-neutral-700"
-                                            role="menu" aria-orientation="vertical"
-                                            aria-labelledby="hs-dropdown-team">
-                                            <div class="p-1 space-y-1">
-                                                <div class="max-w-sm">
-                                                    <div class="relative">
-                                                        <input type="text" x-model="searchFields.team"
-                                                            class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                            placeholder="Cari...">
-                                                        <div
-                                                            class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-                                                            <svg class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
-                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor" class="size-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="overflow-y-scroll max-h-48 space-y-0.5 ">
-                                                    <template x-for="item in getFilteredData('team')">
-                                                        <a @click="toggleSelection('team', item)"
-                                                            class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                                                            :class="isSelected('team', item.id) ? 'bg-green-100' : ''"
-                                                            href="#" x-text="item.name">
-                                                        </a>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
-                                @if ($useAgent)
-                                    <div
-                                        class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] [--auto-close:inside] [--is-collapse:true] md:[--is-collapse:false] relative">
-                                        <div id="hs-dropdown-agent"
-                                            class="flex items-center cursor-pointer gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            :class="selected.agent.length > 0 ? 'bg-green-100' : ''" href="#">
-                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745  0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-                                            </svg>
-
-                                            Agent
-                                        </div>
-                                        <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 relative md:w-48 hidden z-10 md:mt-2 md:!mx-[10px] md:top-0 md:start-full ps-7 md:ps-0 md:bg-white md:rounded-lg md:shadow-md dark:bg-neutral-800 dark:divide-neutral-700 before:hidden md:before:block before:absolute before:-end-5 before:top-0 before:h-full before:w-5 md:after:hidden after:absolute after:top-1 after:start-[18px] after:w-0.5 after:h-[calc(100%-0.25rem)] after:bg-gray-100 dark:md:bg-neutral-800 dark:after:bg-neutral-700"
-                                            role="menu" aria-orientation="vertical"
-                                            aria-labelledby="hs-dropdown-agent">
-                                            <div class="p-1 space-y-1">
-                                                <div class="max-w-sm">
-                                                    <div class="relative">
-                                                        <input type="text" x-model="searchFields.agent"
-                                                            class="peer py-2 px-3 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                            placeholder="Cari...">
-                                                        <div
-                                                            class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-                                                            <svg class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
-                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor" class="size-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="overflow-y-scroll max-h-48 space-y-0.5 ">
-                                                    <template x-for="item in getFilteredData('agent')">
-                                                        <a @click="toggleSelection('agent', item)"
-                                                            class="p-2 md:px-3 capitalize flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                                                            :class="isSelected('agent', item.id) ? 'bg-green-100' : ''"
-                                                            href="#" x-text="item.name">
-                                                        </a>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
 
@@ -265,8 +132,7 @@
                                         <div x-data="{ showOptionMonth: false }">
                                             <a x-ref="btnOtherMonth" @click="showOptionMonth=!showOptionMonth;"
                                                 class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                                :class="dateType == 'other-month' ? 'bg-green-100' : ''"
-                                                href="#">
+                                                :class="dateType == 'other-month' ? 'bg-green-100' : ''" href="#">
                                                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                     stroke="currentColor" class="size-6">
@@ -321,8 +187,7 @@
                                         <div x-data="{ showOptionYear: false }">
                                             <a x-ref="btnOtherYear" @click="showOptionYear=!showOptionYear;"
                                                 class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                                :class="dateType == 'other-year' ? 'bg-green-100' : ''"
-                                                href="#">
+                                                :class="dateType == 'other-year' ? 'bg-green-100' : ''" href="#">
                                                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                     stroke="currentColor" class="size-6">
@@ -361,8 +226,7 @@
                                         <div x-data="{ showOptionDaterange: false }">
                                             <a x-ref="btnDateRange" @click="showOptionDaterange=!showOptionDaterange;"
                                                 class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                                :class="dateType == 'date-range' ? 'bg-green-100' : ''"
-                                                href="#">
+                                                :class="dateType == 'date-range' ? 'bg-green-100' : ''" href="#">
                                                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                     stroke="currentColor" class="size-6">
@@ -419,7 +283,7 @@
                                 </div>
                                 <input type="text" x-model="search" id="simple-search" @change="doFilter()"
                                     class="bg-white border border-gray-300 text-gray-900 text-sm rounded focus:ring-green-500 focus:border-green-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
-                                    placeholder="Cari ... " required>
+                                    placeholder="Search ... " required>
                             </div>
                         </div>
                     </div>
@@ -492,7 +356,7 @@
             <template x-if="dateType">
                 <span
                     class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    Tanggal: <div
+                    Date: <div
                         x-html="dateType =='today' ? 'hari ini': dateType == 'this-month' ? 'bulan ini' : dateType == 'other-month' ? '' : ''">
                     </div>
                     <div
