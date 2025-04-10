@@ -30,7 +30,9 @@ class Table extends Component
     #[On('export')]
     public function export()
     {
-        return Excel::download(new PlantingActivityExport($this->params), 'data-kegiatan-tanam-pohon-'.date('Ymd').'.xlsx');
+        $this->alert('success', 'On development!');
+
+        // return Excel::download(new PlantingActivityExport($this->params), 'data-kegiatan-tanam-pohon-'.date('Ymd').'.xlsx');
     }
 
     public function recalculate($id)
@@ -69,6 +71,7 @@ class Table extends Component
             'selectedAgent' => $filteredItem['agent'] ?? [],
             'selectedAgentL2' => $filteredItem['agent_l2'] ?? [],
             'selectedTeam' => $filteredItem['team'] ?? [],
+            'selectedStatus' => $filteredItem['status'] ?? [],
             'dateType' => $dateType,
             'month' => $month,
             'year' => $year,
@@ -79,7 +82,6 @@ class Table extends Component
         $this->params = $params;
 
         $this->resetPage();
-
     }
 
     public function render()

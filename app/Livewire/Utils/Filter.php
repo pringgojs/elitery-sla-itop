@@ -20,6 +20,8 @@ class Filter extends Component
 
     public $agents;
 
+    public $statuses;
+
     public $dateType;
 
     public $table;
@@ -51,6 +53,8 @@ class Filter extends Component
     
     public $useSearch = false;
     
+    public $useStatus = false;
+
     public $useDownload = false;
     
     public function mount($table, $positionType = null)
@@ -60,6 +64,10 @@ class Filter extends Component
         $this->teams = Contact::classTeam()->select(['id', 'name'])->get();
         $this->callers = Contact::selectFullName()->get();
         $this->agents = Contact::classPerson()->selectFullName()->get();
+        $this->statuses = [
+            ['id' => 'ongoing', 'name' => 'Ongoing'],
+            ['id' => 'closed', 'name' => 'Closed'],
+        ];
         $this->table = $table;
     }
 

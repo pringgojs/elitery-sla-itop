@@ -12,14 +12,6 @@
                             @php
                                 $menuItems = [
                                     [
-                                        'type' => 'link',
-                                        'label' => 'Detail',
-                                        'url' => '',
-                                        'color' => 'text-gray-800',
-                                        'navigate' => true,
-                                        'permission' => 'kegiatan.penanaman.pohon.edit',
-                                    ],
-                                    [
                                         'type' => 'click',
                                         'label' => 'Recalculate',
                                         'action' => 'recalculate',
@@ -27,12 +19,6 @@
                                         'color' => 'text-gray-800',
                                         'navigate' => false,
                                         'permission' => 'kegiatan.penanaman.pohon.edit',
-                                    ],
-                                    [
-                                        'type' => 'delete',
-                                        'label' => 'Delete',
-                                        'color' => 'text-red-600',
-                                        'permission' => 'kegiatan.penanaman.pohon.delete',
                                     ],
                                 ];
                             @endphp

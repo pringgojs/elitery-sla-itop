@@ -108,6 +108,10 @@ class Ticket extends Model
         if ($params['selectedTeam']) {
             $q->whereIn('team_id', $params['selectedTeam']);
         }
+        
+        if ($params['selectedStatus']) {
+            $q->whereIn('operational_status', $params['selectedStatus']);
+        }
 
         $q->date($params);
     }

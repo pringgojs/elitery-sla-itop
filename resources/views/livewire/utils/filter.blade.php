@@ -35,6 +35,7 @@
                                         ['type' => 'team', 'condition' => $useTeam, 'label' => 'Team'],
                                         ['type' => 'agent', 'condition' => $useAgent, 'label' => 'Agent L1'],
                                         ['type' => 'agent_l2', 'condition' => $useAgent, 'label' => 'Agent L2'],
+                                        ['type' => 'status', 'condition' => $useStatus, 'label' => 'Status'],
                                     ];
                                 @endphp
                                 @foreach ($categories as $filter)
@@ -383,6 +384,7 @@
                         teams: @js($teams),
                         agents: @js($agents),
                         agent_l2s: @js($agents),
+                        statuses: @js($statuses),
                     },
                     searchFields: {
                         organization: '',
@@ -390,6 +392,7 @@
                         team: '',
                         agent: '',
                         agent_l2: '',
+                        status: '',
                     },
                     selected: {
                         organization: [],
@@ -397,6 +400,7 @@
                         team: [],
                         agent: [],
                         agent_l2: [],
+                        status: [],
                     },
                     dateType: @entangle('dateType'),
                     month: '',
@@ -408,7 +412,8 @@
                     },
                     getFilteredData(type) {
                         const searchValue = this.searchFields[type].toLowerCase();
-                        const data = this.data[type + 's']; // Dynamically access data (e.g., callers, organizations)
+                        const data = type == 'status' ? this.data[type + 'es'] : this.data[type +
+                            's']; // Dynamically access data (e.g., callers, organizations)
                         if (!searchValue) return data.slice(0, 10); // Return top 10 if no search value
                         return data.filter(item => item.name.toLowerCase().includes(searchValue));
                     },
