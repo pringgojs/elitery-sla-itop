@@ -97,7 +97,11 @@ class Ticket extends Model
         }
 
         if ($params['selectedAgent']) {
-            $q->whereIn('agent_id', $params['selectedAgent']);
+            $q->whereIn('agent_l1_id', $params['selectedAgent']);
+        }
+
+        if ($params['selectedAgentL2']) {
+            $q->whereIn('agent_l2_id', $params['selectedAgentL2']);
         }
         
         if ($params['selectedTeam']) {

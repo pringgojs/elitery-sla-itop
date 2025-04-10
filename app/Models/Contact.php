@@ -29,6 +29,21 @@ class Contact extends Model
         return $this->hasOne(Person::class, 'id', 'id');
     }
 
+    public function scopeJoinPerson($q)
+    {
+        $q->join('person', 'contact.id', '=', 'person.id');
+    }
+
+    public function scopeSelectFullName($q)
+    {
+        $q->joinPerson()
+        ->select([
+            'contact.id',
+            \DB::raw("CONCAT(person.first_name, ' ', contact.name) as name")
+        ]);
+        
+    }
+
     public function scopeOrderByDefault($q)
     {
         $q->orderBy('name');

@@ -33,7 +33,8 @@
                                         ],
                                         ['type' => 'caller', 'condition' => $useCaller, 'label' => 'Caller'],
                                         ['type' => 'team', 'condition' => $useTeam, 'label' => 'Team'],
-                                        ['type' => 'agent', 'condition' => $useAgent, 'label' => 'Agent'],
+                                        ['type' => 'agent', 'condition' => $useAgent, 'label' => 'Agent L1'],
+                                        ['type' => 'agent_l2', 'condition' => $useAgent, 'label' => 'Agent L2'],
                                     ];
                                 @endphp
                                 @foreach ($categories as $filter)
@@ -381,18 +382,21 @@
                         organizations: @js($organizations),
                         teams: @js($teams),
                         agents: @js($agents),
+                        agent_l2s: @js($agents),
                     },
                     searchFields: {
                         organization: '',
                         caller: '',
                         team: '',
                         agent: '',
+                        agent_l2: '',
                     },
                     selected: {
                         organization: [],
                         caller: [],
                         team: [],
                         agent: [],
+                        agent_l2: [],
                     },
                     dateType: @entangle('dateType'),
                     month: '',

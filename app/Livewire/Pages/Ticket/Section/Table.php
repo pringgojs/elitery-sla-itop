@@ -54,6 +54,7 @@ class Table extends Component
             'selectedOrg' => $filteredItem['organization'] ?? [],
             'selectedCaller' => $organization = $filteredItem['caller'] ?? [],
             'selectedAgent' => $filteredItem['agent'] ?? [],
+            'selectedAgentL2' => $filteredItem['agent_l2'] ?? [],
             'selectedTeam' => $filteredItem['team'] ?? [],
             'dateType' => $dateType,
             'month' => $month,
