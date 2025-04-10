@@ -5,11 +5,13 @@ namespace App\Livewire\Pages\Ticket\Section;
 use App\Models\Ticket;
 use Livewire\Component;
 use Livewire\Attributes\On;
-use Livewire\WithPagination;
-use Maatwebsite\Excel\Excel;
-use Livewire\Attributes\Computed;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use App\Helpers\ArrayHelper;
+use Livewire\WithPagination;
+// use Maatwebsite\Excel\Excel;
+use App\Exports\TicketExport;
+use Livewire\Attributes\Computed;
+use Maatwebsite\Excel\Facades\Excel;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Table extends Component
 {
@@ -30,9 +32,9 @@ class Table extends Component
     #[On('export')]
     public function export()
     {
-        $this->alert('success', 'On development!');
+        $this->authorize('ticket.export');
 
-        // return Excel::download(new PlantingActivityExport($this->params), 'data-kegiatan-tanam-pohon-'.date('Ymd').'.xlsx');
+        return Excel::download(new TicketExport($this->params), 'ticket-'.date('Ymd').'.xlsx');
     }
 
     public function recalculate($id)
