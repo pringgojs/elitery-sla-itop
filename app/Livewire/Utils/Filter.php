@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Village;
 use Livewire\Component;
 use App\Models\District;
+use App\Constants\Constants;
 use App\Models\Organization;
 
 class Filter extends Component
@@ -21,6 +22,8 @@ class Filter extends Component
     public $agents;
 
     public $statuses;
+    
+    public $types;
 
     public $dateType;
 
@@ -54,6 +57,8 @@ class Filter extends Component
     public $useSearch = false;
     
     public $useStatus = false;
+    
+    public $useType = false;
 
     public $useDownload = false;
     
@@ -64,10 +69,8 @@ class Filter extends Component
         $this->teams = Contact::classTeam()->select(['id', 'name'])->get();
         $this->callers = Contact::selectFullName()->get();
         $this->agents = Contact::classPerson()->selectFullName()->get();
-        $this->statuses = [
-            ['id' => 'ongoing', 'name' => 'Ongoing'],
-            ['id' => 'closed', 'name' => 'Closed'],
-        ];
+        $this->statuses = Constants::TICKET_STATUS;
+        $this->types = Constants::TICKET_TYPES;
         $this->table = $table;
     }
 

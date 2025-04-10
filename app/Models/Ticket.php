@@ -113,6 +113,10 @@ class Ticket extends Model
             $q->whereIn('operational_status', $params['selectedStatus']);
         }
 
+        if ($params['selectedType']) {
+            $q->whereIn('finalclass', $params['selectedType']);
+        }
+
         $q->date($params);
     }
 

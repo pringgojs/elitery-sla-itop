@@ -36,6 +36,7 @@
                                         ['type' => 'agent', 'condition' => $useAgent, 'label' => 'Agent L1'],
                                         ['type' => 'agent_l2', 'condition' => $useAgent, 'label' => 'Agent L2'],
                                         ['type' => 'status', 'condition' => $useStatus, 'label' => 'Status'],
+                                        ['type' => 'type', 'condition' => $useType, 'label' => 'Type'],
                                     ];
                                 @endphp
                                 @foreach ($categories as $filter)
@@ -385,6 +386,7 @@
                         agents: @js($agents),
                         agent_l2s: @js($agents),
                         statuses: @js($statuses),
+                        types: @js($types),
                     },
                     searchFields: {
                         organization: '',
@@ -393,6 +395,7 @@
                         agent: '',
                         agent_l2: '',
                         status: '',
+                        type: '',
                     },
                     selected: {
                         organization: [],
@@ -401,6 +404,7 @@
                         agent: [],
                         agent_l2: [],
                         status: [],
+                        type: [],
                     },
                     dateType: @entangle('dateType'),
                     month: '',
