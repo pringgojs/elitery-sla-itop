@@ -5,10 +5,6 @@
         <!-- Table Content -->
         <x-slot:table>
             @foreach ($this->items as $index => $item)
-                @php
-                    $slaService = new \App\Services\SlaService($item);
-                    // dd($slaService->getAgentL1());
-                @endphp
                 <tr>
                     <td>
                         <div class="m-5">
@@ -55,19 +51,16 @@
                         {{ $item->title }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        @php
-                            $agentL1 = $slaService->getAgentL1();
-                        @endphp
-                        Name: {{ $agentL1['agent'] ?? '-' }} <br>
-                        Response Time: {{ $agentL1['response_time_formated'] ?? '-' }}
+                        Name: {{ $item->agent_l1_name ?? '-' }} <br>
+                        Response Time:
+                        {{ $item->agent_l1_response_time ? convert_seconds($item->agent_l1_response_time) : 0 }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        @php
-                            $agentL2 = $slaService->getAgentL2();
-                        @endphp
-                        Name: {{ $agentL2['agent'] ?? '-' }} <br>
-                        Response Time: {{ $agentL2['response_time_formated'] ?? '-' }} <br>
-                        Resolution Time: {{ $agentL2['resolution_time_formated'] ?? '-' }}
+                        Name: {{ $item->agent_l2_name ?? '-' }} <br>
+                        Response Time:
+                        {{ $item->agent_l2_response_time ? convert_seconds($item->agent_l2_response_time) : 0 }} <br>
+                        Resolution Time:
+                        {{ $item->agent_l2_resolution_time ? convert_seconds($item->agent_l2_resolution_time) : 0 }}
                     </td>
                 </tr>
             @endforeach

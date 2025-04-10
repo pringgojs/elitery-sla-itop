@@ -13,7 +13,7 @@ class UpdateTicketSla extends Command
      *
      * @var string
      */
-    protected $signature = 'app:update-sla';
+    protected $signature = 'app:update-sla {all?}';
 
     /**
      * The console command description.
@@ -27,12 +27,30 @@ class UpdateTicketSla extends Command
      */
     public function handle()
     {
+        $all = $this->argument('all');
+        if ($all) {
+            $this->ticketAll();
+            return;
+        }
+
+        // Jika tidak ada argumen all, maka hanya memproses tiket yang statusnya open
         // Cari Tiket yang statusnya close tapi belum pernah di update SLA nya
         $this->info('Processing closed tickets...');
         self::ticketClosed();
         $this->info('Closed tickets processed.');
         self::ticketOngoing();
         $this->info('Done.');
+    }
+
+    private function ticketAll()
+    {
+        $all = $this->argument('all');
+        if (!$all) return;
+        
+        $this->info('Processing all tickets...');
+        $tickets = Ticket::all();
+        self::updateDB($tickets);
+        $this->info('All tickets processed.');
     }
 
     private function ticketClosed()
@@ -66,10 +84,10 @@ class UpdateTicketSla extends Command
                 'agent_l1_id' => $agentL1['agent_id'] ?? 0,
                 'agent_l1_name' => $agentL1['agent'] ?? null,
                 'agent_l1_response_time' => $agentL1['response_time'] ?? 0,
-                'agent_l2_id' => $agentL1['agent_id'] ?? 0,
-                'agent_l2_name' => $agentL1['agent'] ?? null,
-                'agent_l2_response_time' => $agentL1['response_time'] ?? 0,
-                'agent_l2_resolution_time' => $agentL1['resolution_time'] ?? 0,
+                'agent_l2_id' => $agentL2['agent_id'] ?? 0,
+                'agent_l2_name' => $agentL2['agent'] ?? null,
+                'agent_l2_response_time' => $agentL2['response_time'] ?? 0,
+                'agent_l2_resolution_time' => $agentL2['resolution_time'] ?? 0,
                 'sla_last_check' => now(),
             ]);
             
