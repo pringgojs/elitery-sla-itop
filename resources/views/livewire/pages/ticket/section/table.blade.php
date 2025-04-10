@@ -1,7 +1,7 @@
 <div>
     <span class=" bg-teal-500 "></span>
     <span class="bg-yellow-500"></span>
-    <x-table :headers="['Action', 'Created At', 'Organization', 'Title', 'Agent L1', 'Agent L2']" title="Ticket">
+    <x-table :headers="['Action', 'Created At', 'Organization', 'Title', 'Agent L1', 'Agent L2', 'Last Update SLA']" title="Ticket">
         <!-- Table Content -->
         <x-slot:table>
             @foreach ($this->items as $index => $item)
@@ -12,13 +12,21 @@
                             @php
                                 $menuItems = [
                                     [
+                                        'type' => 'url',
+                                        'label' => 'Detail',
+                                        'url' => '#',
+                                        'color' => 'text-gray-800',
+                                        'navigate' => false,
+                                        'permission' => 'ticket.recalculate',
+                                    ],
+                                    [
                                         'type' => 'click',
                                         'label' => 'Recalculate',
                                         'action' => 'recalculate',
                                         'param' => $item->id,
                                         'color' => 'text-gray-800',
                                         'navigate' => false,
-                                        'permission' => 'kegiatan.penanaman.pohon.edit',
+                                        'permission' => 'ticket.recalculate',
                                     ],
                                 ];
                             @endphp
@@ -34,7 +42,7 @@
                         {{ $item->organization->name ?? '-' }}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">
-                        <b>{{ $item->ref }} {!! $item->status() !!}</b> <br>
+                        <b>{{ $item->id }} | {{ $item->ref }} {!! $item->status() !!}</b> <br>
                         {{ $item->title }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
@@ -48,6 +56,9 @@
                         {{ $item->agent_l2_response_time ? convert_seconds($item->agent_l2_response_time) : 0 }} <br>
                         Resolution Time:
                         {{ $item->agent_l2_resolution_time ? convert_seconds($item->agent_l2_resolution_time) : 0 }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                        {{ date_format_human($item->sla_last_check) }}
                     </td>
                 </tr>
             @endforeach

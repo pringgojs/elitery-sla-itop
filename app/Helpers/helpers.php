@@ -58,6 +58,7 @@ function months()
 /* date formating */
 function date_format_human($value)
 {
+    if (!$value) return '-';
     // Set locale ke bahasa Indonesia
     Carbon::setLocale('id');
 
@@ -65,7 +66,7 @@ function date_format_human($value)
     $carbonDate = Carbon::parse($value);
 
     // Format datetime menjadi 'd F Y H:i' (contoh: 24 Januari 2024 25:56)
-    return $carbonDate->translatedFormat('d F Y');
+    return $carbonDate->translatedFormat('d F Y H:i');
 }
 
 function format_price($string = null)
