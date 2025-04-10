@@ -16,43 +16,19 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         self::permission();
-        self::roleGivePermission();
     }
 
     public function permission()
     {
         $group = 'Menu';
-        $permissions = PermissionService::create($group, ['master', 'kegiatan penanaman pohon', 'laporan', 'manajemen user']);
+        $permissions = PermissionService::create($group, ['ticket', 'report', 'management user']);
         $group = 'User';
         $permissions = PermissionService::create($group, ['view', 'create', 'edit', 'delete']);
         $group = 'Role';
         $permissions = PermissionService::create($group, ['view', 'create', 'edit', 'delete', 'permission']);
         $group = 'Permission';
         $permissions = PermissionService::create($group, ['view', 'create', 'edit', 'delete']);
-        $group = 'Sumber Anggaran';
-        $permissions = PermissionService::create($group, ['view', 'create', 'edit', 'delete']);
-        $group = 'Sumber Bibit';
-        $permissions = PermissionService::create($group, ['view', 'create', 'edit', 'delete']);
-        $group = 'Jenis Bibit';
-        $permissions = PermissionService::create($group, ['view', 'create', 'edit', 'delete']);
-        $group = 'Jenis Kegiatan';
-        $permissions = PermissionService::create($group, ['view', 'create', 'edit', 'delete']);
-        $group = 'Kegiatan Penanaman Pohon';
-        $permissions = PermissionService::create($group, ['view', 'create', 'edit', 'delete', 'export', 'add report', 'edit report', 'delete report']);
-        $group = 'Laporan';
-        $permissions = PermissionService::create($group, ['view', 'export']);
-    }
-
-    public function roleGivePermission()
-    {
-        $role = Role::where('name','Petugas')->first();
-        $keywords = ['kegiatan.penanaman', 'laporan'];
-
-        foreach ($keywords as $key => $value) {
-            $permissions = Permission::whereLike('name', '%'.$value.'%')->get();
-            foreach ($permissions as $item) {
-                $role->givePermissionTo($item->name);
-            }
-        }
+        $group = 'Ticket';
+        $permissions = PermissionService::create($group, ['view', 'recalculate', 'export']);
     }
 }

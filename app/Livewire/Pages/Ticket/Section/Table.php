@@ -31,6 +31,11 @@ class Table extends Component
         return Excel::download(new PlantingActivityExport($this->params), 'data-kegiatan-tanam-pohon-'.date('Ymd').'.xlsx');
     }
 
+    public function recalculate($id)
+    {
+        dd($id);
+    }
+
     public function updatingFilter()
     {
         $this->resetPage();

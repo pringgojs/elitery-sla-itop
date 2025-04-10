@@ -20,9 +20,10 @@
                                         'permission' => 'kegiatan.penanaman.pohon.edit',
                                     ],
                                     [
-                                        'type' => 'link',
+                                        'type' => 'click',
                                         'label' => 'Recalculate',
-                                        'url' => '',
+                                        'action' => 'recalculate',
+                                        'param' => $item->id,
                                         'color' => 'text-gray-800',
                                         'navigate' => false,
                                         'permission' => 'kegiatan.penanaman.pohon.edit',

@@ -53,13 +53,13 @@
                             <path
                                 d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                         </svg>
-                        Beranda
+                        Dashboard
                     </a>
                     <a class="p-2 flex items-center text-sm text-gray-800 focus:outline-none focus:text-blue-600 dark:text-blue-500 dark:focus:text-blue-500"
                         href="{{ route('ticket.index') }}" wire:navigate aria-current="page">
                         Ticket
                     </a>
-                    @can('menu.manajemen.user')
+                    @can('menu.management.user')
                         <!-- Dropdown -->
                         <div
                             class="hs-dropdown [--strategy:static] md:[--strategy:fixed] [--adaptive:none] [--is-collapse:true] md:[--is-collapse:false] ">
@@ -75,7 +75,7 @@
                                     <path d="M10 12h11" />
                                     <path d="M10 18h11" />
                                 </svg>
-                                Manajemen User
+                                Management User and Role
                                 <svg class="hs-dropdown-open:-rotate-180 md:hs-dropdown-open:rotate-0 duration-300 shrink-0 size-4 ms-auto md:ms-1"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
