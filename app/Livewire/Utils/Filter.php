@@ -57,8 +57,8 @@ class Filter extends Component
     {
         $this->dateType = request()->input('dateType') ? : '';
         $this->organizations = Organization::select(['id', 'name'])->orderByDefault()->get();
+        $this->teams = Contact::classTeam()->select(['id', 'name'])->get();
         $this->callers = Contact::selectFullName()->get();
-        $this->teams = Contact::classTeam()->selectFullName()->get();
         $this->agents = Contact::classPerson()->selectFullName()->get();
         $this->table = $table;
     }
