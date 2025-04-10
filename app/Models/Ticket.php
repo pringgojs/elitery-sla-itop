@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Constants\Constants;
+use App\Services\SlaService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -195,6 +196,28 @@ class Ticket extends Model
         }
     
         return $data;
+    }
+
+    public function recalculate()
+    {
+        $slaService = new SlaService($this);
+        $agentL1 = $slaService->getAgentL1();
+        $agentL2 = $slaService->getAgentL2();
+
+        if (!$agentL1 || !$agentL2) {
+            return;
+        }            
+        
+        $this->update([
+            'agent_l1_id' => $agentL1['agent_id'] ?? 0,
+            'agent_l1_name' => $agentL1['agent'] ?? null,
+            'agent_l1_response_time' => $agentL1['response_time'] ?? 0,
+            'agent_l2_id' => $agentL2['agent_id'] ?? 0,
+            'agent_l2_name' => $agentL2['agent'] ?? null,
+            'agent_l2_response_time' => $agentL2['response_time'] ?? 0,
+            'agent_l2_resolution_time' => $agentL2['resolution_time'] ?? 0,
+            'sla_last_check' => now(),
+        ]);
     }
 
 }

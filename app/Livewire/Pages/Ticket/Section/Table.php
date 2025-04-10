@@ -15,6 +15,8 @@ class Table extends Component
 {
     use LivewireAlert;
     use WithPagination;
+    
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public $modalConfirmDelete = false;
     public $params = [];
@@ -33,7 +35,13 @@ class Table extends Component
 
     public function recalculate($id)
     {
-        dd($id);
+        $this->authorize('ticket.recalculate');
+        
+        $ticket = Ticket::findOrFail($id);
+        $ticket->recalculate();
+
+        $this->alert('success', 'Success!');
+        $this->dispatch('refreshComponent')->self();
     }
 
     public function updatingFilter()

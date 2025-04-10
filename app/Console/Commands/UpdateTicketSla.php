@@ -72,25 +72,7 @@ class UpdateTicketSla extends Command
     private function updateDB($tickets = [])
     {
         foreach ($tickets as $ticket) {
-            $slaService = new SlaService($ticket);
-            $agentL1 = $slaService->getAgentL1();
-            $agentL2 = $slaService->getAgentL2();
-
-            if (!$agentL1 || !$agentL2) {
-                continue;
-            }            
-            
-            $ticket->update([
-                'agent_l1_id' => $agentL1['agent_id'] ?? 0,
-                'agent_l1_name' => $agentL1['agent'] ?? null,
-                'agent_l1_response_time' => $agentL1['response_time'] ?? 0,
-                'agent_l2_id' => $agentL2['agent_id'] ?? 0,
-                'agent_l2_name' => $agentL2['agent'] ?? null,
-                'agent_l2_response_time' => $agentL2['response_time'] ?? 0,
-                'agent_l2_resolution_time' => $agentL2['resolution_time'] ?? 0,
-                'sla_last_check' => now(),
-            ]);
-            
+            $ticket->recalculate();
         }
     }
 }
