@@ -84,7 +84,6 @@
         <!-- ========== END FOOTER ========== -->
     </div>
 
-    @livewire('modals.report')
     @stack('modals')
     @livewireScripts
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
