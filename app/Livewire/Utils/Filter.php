@@ -61,6 +61,11 @@ class Filter extends Component
     public $useType = false;
 
     public $useDownload = false;
+
+    public $statusTicketRequest = [];
+    public $statusTicketIncident = [];
+    public $statusTicketProblem = [];
+    public $statusTicketChange = [];
     
     public function mount($table, $positionType = null)
     {
@@ -69,9 +74,13 @@ class Filter extends Component
         $this->teams = Contact::classTeam()->select(['id', 'name'])->get();
         $this->callers = Contact::selectFullName()->get();
         $this->agents = Contact::classPerson()->selectFullName()->get();
-        $this->statuses = Constants::TICKET_STATUS;
         $this->types = Constants::TICKET_TYPES;
+        $this->statusTicketRequest = status_ticket_request();
+        $this->statusTicketIncident = status_ticket_incident();
+        $this->statusTicketProblem = status_ticket_problem();
+        $this->statusTicketChange = status_ticket_change();
         $this->table = $table;
+
     }
 
     public function render()

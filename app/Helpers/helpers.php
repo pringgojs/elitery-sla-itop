@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\Change;
 use App\Models\Option;
+use App\Models\TicketProblem;
+use App\Models\TicketRequest;
+use App\Models\TicketIncident;
 use Illuminate\Support\Carbon;
 
 /** initials */
@@ -115,4 +119,66 @@ function convert_seconds($seconds = 0)
     }
 
     return $seconds % 60 . "s";
+}
+
+function status_ticket_incident()
+{
+    $model = TicketIncident::select('status')
+        ->distinct()
+        ->orderBy('status', 'asc')
+        ->pluck('status');
+
+    return $model->map(function ($status) {
+        return [
+            'id' => $status,
+            'name' => ucwords(str_replace('_', ' ', $status)),
+        ];
+    });
+    
+
+}
+
+function status_ticket_problem()
+{
+    $model = TicketProblem::select('status')
+        ->distinct()
+        ->orderBy('status', 'asc')
+        ->pluck('status');
+
+    return $model->map(function ($status) {
+        return [
+            'id' => $status,
+            'name' => ucwords(str_replace('_', ' ', $status)),
+        ];
+    });
+}
+
+function status_ticket_request()
+{
+    $model = TicketRequest::select('status')
+        ->distinct()
+        ->orderBy('status', 'asc')
+        ->pluck('status');
+
+    return $model->map(function ($status) {
+        return [
+            'id' => $status,
+            'name' => ucwords(str_replace('_', ' ', $status)),
+        ];
+    });
+}
+
+function status_ticket_change()
+{
+    $model = Change::select('status')
+        ->distinct()
+        ->orderBy('status', 'asc')
+        ->pluck('status');
+
+    return $model->map(function ($status) {
+        return [
+            'id' => $status,
+            'name' => ucwords(str_replace('_', ' ', $status)),
+        ];
+    });
 }

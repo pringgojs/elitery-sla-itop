@@ -35,8 +35,8 @@
                                         ['type' => 'team', 'condition' => $useTeam, 'label' => 'Team'],
                                         ['type' => 'agent', 'condition' => $useAgent, 'label' => 'Agent L1'],
                                         ['type' => 'agent_l2', 'condition' => $useAgent, 'label' => 'Agent L2'],
-                                        ['type' => 'status', 'condition' => $useStatus, 'label' => 'Status'],
                                         ['type' => 'type', 'condition' => $useType, 'label' => 'Type'],
+                                        ['type' => 'status', 'condition' => $useStatus, 'label' => 'Status'],
                                     ];
                                 @endphp
                                 @foreach ($categories as $filter)
@@ -378,8 +378,17 @@
                         teams: @js($teams),
                         agents: @js($agents),
                         agent_l2s: @js($agents),
-                        statuses: @js($statuses),
+                        // statuses: @js($statuses),
+                        statuses: [],
                         types: @js($types),
+                    },
+                    statusTicket: {
+                        UserRequest: @js($statusTicketRequest),
+                        NormalChange: @js($statusTicketChange),
+                        RoutineChange: @js($statusTicketChange),
+                        EmergencyChange: @js($statusTicketChange),
+                        Incident: @js($statusTicketIncident),
+                        Problem: @js($statusTicketProblem),
                     },
                     searchFields: {
                         organization: '',
@@ -387,8 +396,8 @@
                         team: '',
                         agent: '',
                         agent_l2: '',
-                        status: '',
                         type: '',
+                        status: '',
                     },
                     selected: {
                         organization: [],
@@ -396,8 +405,8 @@
                         team: [],
                         agent: [],
                         agent_l2: [],
-                        status: [],
                         type: [],
+                        status: [],
                     },
                     dateType: @entangle('dateType'),
                     month: '',
@@ -415,13 +424,24 @@
                         return data.filter(item => item.name.toLowerCase().includes(searchValue));
                     },
                     toggleSelection(type, item) {
-                        const selectedList = this.selected[type];
-                        const index = selectedList.findIndex(selected => selected.id === item.id);
-                        if (index !== -1) {
-                            selectedList.splice(index, 1);
+                        if (type === 'type') {
+                            // Batasi pilihan hanya satu untuk filter 'type'
+                            this.selected[type] = [item]; // Hanya simpan item yang baru dipilih
+                            // Perbarui data 'statuses' berdasarkan 'type' yang dipilih
+                            this.data.statuses = this.statusTicket[item.id] || [];
+                            // Reset filter status yang sudah dipilih
+                            this.selected.status = [];
                         } else {
-                            selectedList.push(item);
+                            const selectedList = this.selected[type];
+                            const index = selectedList.findIndex(selected => selected.id === item.id);
+                            if (index !== -1) {
+                                selectedList.splice(index, 1);
+                            } else {
+                                selectedList.push(item);
+                            }
                         }
+
+                        console.log('Selected items:', this.selected[type]);
                         this.doFilter();
                     },
                     isSelected(type, id) {

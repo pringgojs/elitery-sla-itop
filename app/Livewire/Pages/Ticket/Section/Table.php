@@ -69,7 +69,7 @@ class Table extends Component
         $params = [
             'search' => $search,
             'selectedOrg' => $filteredItem['organization'] ?? [],
-            'selectedCaller' => $organization = $filteredItem['caller'] ?? [],
+            'selectedCaller' => $filteredItem['caller'] ?? [],
             'selectedAgent' => $filteredItem['agent'] ?? [],
             'selectedAgentL2' => $filteredItem['agent_l2'] ?? [],
             'selectedTeam' => $filteredItem['team'] ?? [],
@@ -83,6 +83,7 @@ class Table extends Component
         ];
 
         $this->params = $params;
+
 
         $this->resetPage();
     }

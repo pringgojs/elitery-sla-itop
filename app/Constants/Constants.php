@@ -14,9 +14,4 @@ class Constants
         ['id' => 'Incident', 'name' => 'Incident'],
         ['id' => 'Problem', 'name' => 'Problem'],
     ];
-
-    const TICKET_STATUS = [
-        ['id' => 'ongoing', 'name' => 'Ongoing'],
-        ['id' => 'closed', 'name' => 'Closed'],
-    ];
 }

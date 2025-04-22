@@ -42,6 +42,22 @@ class Ticket extends Model
         return $this->hasOne(TicketRequest::class, 'id', 'id');
     }
 
+    public function ticketProblem()
+    {
+        return $this->hasOne(TicketProblem::class, 'id', 'id');
+    }
+
+    /* yg punya change, adalah ticket dengan finalClass NormalChange, RoutineChange, EmergencyChange  */
+    public function ticketChange()
+    {
+        return $this->hasOne(Change::class, 'id', 'id');
+    }
+
+    // public function ticketRequest()
+    // {
+    //     return $this->hasOne(TicketRequest::class, 'id', 'id');
+    // }
+
     public function agent()
     {
         return $this->belongsTo(Contact::class, 'agent_id');
