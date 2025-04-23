@@ -42,8 +42,9 @@
                         {{ $item->organization->name ?? '-' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        <b>{{ $item->id }} | {{ $item->ref }} | {{ $item->finalclass }} |
-                            {!! $item->status() !!}</b> <br>
+                        <b>{{ $item->id }}<x-bi-dot class="w-5 h-5 inline" />{{ $item->ref }}<x-bi-dot
+                                class="w-5 h-5 inline" /> {{ $item->finalclass }}
+                            <x-bi-dot class="w-5 h-5 inline" /> {!! $item->status() !!}</b> <br>
                         {{ $item->title }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">

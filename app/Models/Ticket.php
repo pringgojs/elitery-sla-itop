@@ -212,8 +212,10 @@ class Ticket extends Model
     {
         $status = $this->ticketRequest->status ?? $this->ticketChange->status ?? $this->ticketIncident->status ?? $this->ticketProblem->status;
         $status = ucwords(str_replace('_', ' ', $status));
+
+        return $status;
         
-        return '<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-500 text-white">'.$status.'</span>';
+        // return '<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-500 text-white">'.$status.'</span>';
     }
     
     public function getPrivateLog() {
