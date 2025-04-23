@@ -8,23 +8,28 @@ use App\Models\Ticket;
 use App\Models\UserCpanel;
 use Illuminate\Support\Facades\Http;
 
+/**
+ * Class ini hanya digunakan untuk jenis tiket Incident dan tiket Request.
+ */
 class SlaService
 {
     public $ticket;
     public $ticketRequest;
+    public $ticketIncident;
     public function __construct($ticket)
     {
         $this->ticket = $ticket;
         $this->ticketRequest = $this->ticket->ticketRequest ?? null;
+        $this->ticketIncident = $this->ticket->ticketIncident ?? null;
 
-        if (!$this->ticketRequest) return []; // Jika tidak ada ticket request, return array kosong
+        if (!$this->ticketRequest && !$this->ticketIncident) return []; // Jika tidak ada ticket request dan ticket incident, return array kosong
     }
 
     public function getAgentL1()
     {
-        if (!$this->ticketRequest) return [];
-        // dd($publicLog = $this->ticketRequest->getPublicLogIndex());
-        $publicLog = $this->ticketRequest->getPublicLogIndex();
+        if (!$this->ticketRequest && !$this->ticketIncident) return [];
+
+        $publicLog = $this->ticketRequest->getPublicLogIndex() ?? $this->ticketIncident->getPublicLogIndex();
         $privateLog = $this->ticket->getPrivateLogIndex();
 
         if (!$publicLog && !$privateLog) return [];
@@ -55,25 +60,31 @@ class SlaService
          * Jika statusnya sudah close maka diambil dari kolom agent yg ada di tiket
          * Atau agent L2 bisa diambil dari siapa yg terakhir kali meresponse baik itu di public log atau private log
          * 
-         * Untuk L2 Response Time mohon bantuannya untuk dibuat 2 Kondisi, yaitu
-         * Kondisi pertama waktu L2 Response Time dihitung dari L1 Response Public Log sampai status Ticket Dispatched.
-         * Atau kondisi kedua yaitu L2 Response Time dihitung dari L1 Response Public Log sampai status Ticket Assigned.
-         * 
+         * Response Time L2 dihitung ketika Engineer dilakukan Assign, dan Engineer L2 memberikan pesan "Response" pada Private Log. Mbk kalau misal pesannya bebas aja gimana ? jadi gak perlu keyword2.. yg penting l2 nulis di private log, yaudah itu yg diambil sebagai response time
+         *
          * Resolution time dihitung dari assignment date sampai resolution date.
          * Jika ada pending, maka dikurangi dengan pending time yg ada di kolom cumulatedpending_timespent.
          */
 
-        $firstAgentResponse = $this->getAgentL1();
-        if (!$firstAgentResponse) return [];
-
-        $firstAgentResponseDate = $firstAgentResponse['date_end'];
-        $assignmentDate = $this->ticketRequest->assignment_date ?? null;
+        $assignmentDate = $this->ticketRequest->assignment_date ?? $this->ticketIncident->assignment_date ?? null;
         if (!$assignmentDate) return [];
 
-        $responseTime = get_time_diff_inseconds($firstAgentResponseDate, $assignmentDate);
+        /* agent l2 wajib kirim komentar ke private log setelah mendapat assign */
+        $privateLog = $this->ticket->getPrivateLog(); // Ambil private log dari ticket yang mana timestampnya lebih besar dari assignment date
 
-        $totalPendingTime = $this->ticketRequest->cumulatedpending_timespent ?? 0;
-        $resolutionDate = $this->ticketRequest->resolution_date ?? null;
+        if ($privateLog) {
+            $privateLog = collect($privateLog)->filter(function ($log) use ($assignmentDate) {
+                return $log["timestamp"] > $assignmentDate;
+            })->sortBy('timestamp')->first();
+        }
+        if (!$privateLog) return [];
+
+
+        $responseTime = get_time_diff_inseconds($assignmentDate, $privateLog['timestamp']);
+        $responseTime = $responseTime > 0 ? $responseTime : 0;
+
+        $totalPendingTime = $this->ticketRequest->cumulatedpending_timespent ?? $this->ticketIncident->cumulatedpending_timespent ?? 0;
+        $resolutionDate = $this->ticketRequest->resolution_date ?? $this->ticketIncident->resolution_date ?? null;
         $resolutionTime = $resolutionDate
             ? get_time_diff_inseconds($assignmentDate, $resolutionDate) - $totalPendingTime
             : 0;

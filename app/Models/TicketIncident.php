@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\HasPublicLog;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TicketIncident extends Model
 {
-    use HasFactory;
+    use HasFactory, HasPublicLog;
 
     protected $connection = 'mysql2'; // Menggunakan koneksi mysql2
 
