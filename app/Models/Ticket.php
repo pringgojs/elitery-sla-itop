@@ -47,6 +47,11 @@ class Ticket extends Model
         return $this->hasOne(TicketProblem::class, 'id', 'id');
     }
 
+    public function ticketIncident()
+    {
+        return $this->hasOne(TicketIncident::class, 'id', 'id');
+    }
+
     /* yg punya change, adalah ticket dengan finalClass NormalChange, RoutineChange, EmergencyChange  */
     public function ticketChange()
     {
@@ -124,15 +129,37 @@ class Ticket extends Model
         if ($params['selectedTeam']) {
             $q->whereIn('team_id', $params['selectedTeam']);
         }
-        
-        if ($params['selectedStatus']) {
-            $q->whereIn('operational_status', $params['selectedStatus']);
-        }
 
         if ($params['selectedType']) {
             $q->whereIn('finalclass', $params['selectedType']);
         }
 
+        
+        if ($params['selectedStatus'] && $params['selectedType']) {
+            if (in_array('RoutineChange', $params['selectedType']) || in_array('NormalChange', $params['selectedType']) || in_array('EmergencyChange', $params['selectedType'])) {
+                $q->whereHas('ticketChange', function ($query) use ($params) {
+                    $query->whereIn('status', $params['selectedStatus']);
+                });
+            }
+
+            if (in_array('Incident', $params['selectedType'])) {
+                $q->whereHas('ticketIncident', function ($query) use ($params) {
+                    $query->whereIn('status', $params['selectedStatus']);
+                });
+            }
+            if (in_array('Problem', $params['selectedType'])) {
+                $q->whereHas('ticketProblem', function ($query) use ($params) {
+                    $query->whereIn('status', $params['selectedStatus']);
+                });
+            }
+            if (in_array('UserRequest', $params['selectedType'])) {
+                $q->whereHas('ticketRequest', function ($query) use ($params) {
+                    $query->whereIn('status', $params['selectedStatus']);
+                });
+            }
+        }
+
+        /* date */
         $q->date($params);
     }
 
@@ -183,11 +210,10 @@ class Ticket extends Model
 
     public function status()
     {
-        if ($this->operational_status == 'closed') {
-            return '<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-500 text-white">Closed</span>';
-        }
-
-        return '<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-500 text-white">'.$this->operational_status.'</span>';
+        $status = $this->ticketRequest->status ?? $this->ticketChange->status ?? $this->ticketIncident->status ?? $this->ticketProblem->status;
+        $status = ucwords(str_replace('_', ' ', $status));
+        
+        return '<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-500 text-white">'.$status.'</span>';
     }
     
     public function getPrivateLog() {

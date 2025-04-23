@@ -26,7 +26,7 @@ class Table extends Component
     #[Computed]
     public function items()
     {
-        return Ticket::filter($this->params)->with(['organization', 'agent', 'team', 'caller'])->orderByDefault()->paginate();
+        return Ticket::filter($this->params)->with(['organization', 'agent', 'team', 'caller', 'ticketRequest', 'ticketProblem', 'ticketIncident', 'ticketChange'])->orderByDefault()->paginate();
     }
 
     #[On('export')]

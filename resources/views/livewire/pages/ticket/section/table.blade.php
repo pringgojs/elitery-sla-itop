@@ -41,8 +41,9 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         {{ $item->organization->name ?? '-' }}
                     </td>
-                    <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">
-                        <b>{{ $item->id }} | {{ $item->ref }} {!! $item->status() !!}</b> <br>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                        <b>{{ $item->id }} | {{ $item->ref }} | {{ $item->finalclass }} |
+                            {!! $item->status() !!}</b> <br>
                         {{ $item->title }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
