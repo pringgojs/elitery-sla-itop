@@ -13,6 +13,14 @@ use App\Models\Organization;
 
 class Filter extends Component
 {
+    public $statusTicketRequest = [];
+
+    public $statusTicketIncident = [];
+    
+    public $statusTicketProblem = [];
+    
+    public $statusTicketChange = [];
+
     public $organizations;
 
     public $callers;
@@ -61,11 +69,6 @@ class Filter extends Component
     public $useType = false;
 
     public $useDownload = false;
-
-    public $statusTicketRequest = [];
-    public $statusTicketIncident = [];
-    public $statusTicketProblem = [];
-    public $statusTicketChange = [];
     
     public function mount($table, $positionType = null)
     {

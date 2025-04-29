@@ -182,3 +182,23 @@ function status_ticket_change()
         ];
     });
 }
+
+function status_by_type($type)
+{
+    switch ($type) {
+        case 'Incident':
+            return status_ticket_incident();
+        case 'Problem':
+            return status_ticket_problem();
+        case 'UserRequest':
+            return status_ticket_request();
+        case 'NormalChange':
+            return status_ticket_change();
+        case 'RoutineChange':
+            return status_ticket_change();
+        case 'EmergencyChange':
+            return status_ticket_change();
+        default:
+            return [];
+    }
+}
