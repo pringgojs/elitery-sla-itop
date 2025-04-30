@@ -11,6 +11,8 @@ use Livewire\Attributes\Computed;
 
 class Data extends Component
 {
+    public $barChartHandlingRequest;
+    public $counter;
     /* jenis tiket kita set default UserRequest */
     public $params = [
         'search' => '',
@@ -21,18 +23,25 @@ class Data extends Component
         'selectedTeam' => [],
         'selectedStatus' => [],
         'selectedType' => [],
-        'dateType' => 'this-month',
-        'month' => '',
-        'year' => '',
+        'dateType' => 'other-month',
+        'month' => '2',
+        'year' => '2025',
         'dateStart' => '',
         'dateEnd' => '',
     ];
 
-    #[Computed]
+
+    public function mount()
+    {
+        $this->counter = $this->counter();
+        $this->barChartHandlingRequest = self::barChartHandlingRequestPerDept();
+    }
+
     public function counter()
     {
         $type = $this->params['selectedType'][0] ?? 'UserRequest';
         $statuses = status_by_type($type);
+        // dd($statuses);
 
         $data = [];
         foreach ($statuses as $status) {
@@ -51,7 +60,7 @@ class Data extends Component
         return $data;
     }
 
-    #[Computed]
+    // #[Computed]
     public function barChartHandlingRequestPerDept()
     {
         $data['title'] = 'Handling Request Per Department';
@@ -92,10 +101,10 @@ class Data extends Component
             return 'Year:'. date('Y');
         }
         if ($this->params['dateType'] == 'other-month') {
-            return date('F Y', strtotime($this->params['month'] . ' ' . $this->params['year']));
+            return date('F Y', mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
         }
         if ($this->params['dateType'] == 'other-year') {
-            return 'Year:'. date('Y', strtotime($this->params['year']));
+            return 'Year:'. $this->params['year'];
         }
     }
 
@@ -131,10 +140,12 @@ class Data extends Component
 
         $this->params = $params;
 
-        $barChartHandlingRequestPerDept = $this->barChartHandlingRequestPerDept;
+        $chartHandlingRequest = self::barChartHandlingRequestPerDept();
+        $counter = self::counter();
 
-        $this->dispatch('on-update-handling-request-per-dept', legend: $barChartHandlingRequestPerDept['legend'], series: $barChartHandlingRequestPerDept['series']);
+        $this->dispatch('on-update-handling-request-per-dept', legend: $chartHandlingRequest['legend'], series: $chartHandlingRequest['series']);
 
+        $this->dispatch('on-update-counter', $counter);
         // $this->resetPage();
     }
 
