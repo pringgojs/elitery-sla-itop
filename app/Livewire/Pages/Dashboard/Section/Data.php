@@ -23,7 +23,7 @@ class Data extends Component
         'selectedAgentL2' => [],
         'selectedTeam' => [],
         'selectedStatus' => [],
-        'selectedType' => [],
+        'selectedType' => ['UserRequest'],
         'dateType' => 'other-month',
         'month' => '2',
         'year' => '2025',
@@ -36,6 +36,7 @@ class Data extends Component
     {
         $this->counter = $this->counter();
         $this->barChartHandlingRequest = self::barChartHandlingRequestPerDept();
+        // $this->barChartTotalTicketPerMonth = self::barChartTotalTicketPerMonth();
     }
     
     #[Computed]
@@ -46,14 +47,7 @@ class Data extends Component
 
         $data = [];
         foreach ($statuses as $status) {
-            $this->params['selectedStatus'] = [$status['id']];
-            $this->params['selectedType'] = [$type];
-            $this->params['selectedTeam'] = []; // reset team biar tidak mempengaruhi hasil
-
-            if ($status['id'] == 'new') {
-                info($this->params);
-            }
-            $count = Ticket::filter($this->params)->count();
+            $count = Ticket::filter($this->params)->status([$type], [$status['id']])->count();
             array_push($data, [
                 'id' => $status['id'],
                 'type' => $type,
@@ -68,8 +62,36 @@ class Data extends Component
     // #[Computed]
     public function barChartHandlingRequestPerDept()
     {
+        $type = $this->params['selectedType'][0] ?? 'UserRequest';
+
+        $data['title'] = 'Total Ticket by Department ('. $type .')';
+
+        $data['legend'] = Contact::classTeam()->select(['id', 'name'])->pluck('name')->toArray();
+
+
+        $counter = [];
+        foreach (Contact::classTeam()->select(['id', 'name'])->get() as $item) {
+            $counter[] = Ticket::filter($this->params)->where('team_id', $item->id)->count();
+        }
+
+        $data['series'] = [
+            [
+                'label' => self::getMonth(),
+                'data' => $counter,
+                'backgroundColor' => ['#10B981'],
+                'borderColor' => ['#10B981'],
+                'borderWidth' => 1,
+            ]
+        ];
+
+        return $data;
+    }
+
+    public function barChartTotalTicketPerMonth()
+    {
         $data['title'] = 'Handling Request Per Department';
 
+        // dd($this->getDateList());
         $data['legend'] = Contact::classTeam()->select(['id', 'name'])->pluck('name')->toArray();
 
         $type = $this->params['selectedType'][0] ?? 'UserRequest';
@@ -112,6 +134,27 @@ class Data extends Component
         if ($this->params['dateType'] == 'other-year') {
             return 'Year:'. $this->params['year'];
         }
+    }
+
+    public function getDateList()
+    {
+        $dates = [];
+
+        if ($this->params['dateType'] == 'this-month') {
+            $start = strtotime(date('Y-m-01'));
+            $end = strtotime(date('Y-m-t'));
+        } elseif ($this->params['dateType'] == 'other-month') {
+            $start = strtotime($this->params['year'] . '-' . $this->params['month'] . '-01');
+            $end = strtotime(date('Y-m-t', $start));
+        } else {
+            return $dates; // Return empty array for unsupported dateType
+        }
+
+        for ($current = $start; $current <= $end; $current = strtotime('+1 day', $current)) {
+            $dates[] = date('Y-m-d', $current);
+        }
+
+        return $dates;
     }
 
 

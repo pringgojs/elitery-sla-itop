@@ -136,31 +136,36 @@ class Ticket extends Model
 
         
         if ($params['selectedStatus'] && $params['selectedType']) {
-            if (in_array('RoutineChange', $params['selectedType']) || in_array('NormalChange', $params['selectedType']) || in_array('EmergencyChange', $params['selectedType'])) {
-                $q->whereHas('ticketChange', function ($query) use ($params) {
-                    $query->whereIn('status', $params['selectedStatus']);
-                });
-            }
-
-            if (in_array('Incident', $params['selectedType'])) {
-                $q->whereHas('ticketIncident', function ($query) use ($params) {
-                    $query->whereIn('status', $params['selectedStatus']);
-                });
-            }
-            if (in_array('Problem', $params['selectedType'])) {
-                $q->whereHas('ticketProblem', function ($query) use ($params) {
-                    $query->whereIn('status', $params['selectedStatus']);
-                });
-            }
-            if (in_array('UserRequest', $params['selectedType'])) {
-                $q->whereHas('ticketRequest', function ($query) use ($params) {
-                    $query->whereIn('status', $params['selectedStatus']);
-                });
-            }
+            $q->status($params['selectedType'], $params['selectedStatus']);
         }
 
         /* date */
         $q->date($params);
+    }
+
+    public function scopeStatus($q, $type = [], $status = [])
+    {
+        if (in_array('RoutineChange', $type) || in_array('NormalChange', $type) || in_array('EmergencyChange', $type)) {
+            $q->whereHas('ticketChange', function ($query) use ($status) {
+                $query->whereIn('status', $status);
+            });
+        }
+
+        if (in_array('Incident', $type)) {
+            $q->whereHas('ticketIncident', function ($query) use ($status) {
+                $query->whereIn('status', $status);
+            });
+        }
+        if (in_array('Problem', $type)) {
+            $q->whereHas('ticketProblem', function ($query) use ($status) {
+                $query->whereIn('status', $status);
+            });
+        }
+        if (in_array('UserRequest', $type)) {
+            $q->whereHas('ticketRequest', function ($query) use ($status) {
+                $query->whereIn('status', $status);
+            });
+        }
     }
 
     public function scopeDate($q, $data = [])

@@ -4,8 +4,6 @@
     <dl x-data="{
         counters: @js($counter),
         updateCounter(data) {
-            console.log('Data received from event:', data); // Debug data yang diterima
-    
             // Konversi data menjadi array biasa
             const plainData = JSON.parse(JSON.stringify(data[0])); // Ambil elemen pertama dari array bersarang
             this.counters = plainData; // Perbarui counters dengan array biasa

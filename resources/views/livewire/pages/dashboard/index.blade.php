@@ -7,6 +7,6 @@
         </div>
     </div>
 
-    @livewire('utils.filter', ['table' => 'pages.dashboard.section.data', 'useType' => true, 'useStatus' => false, 'useDate' => true, 'useSearch' => false, 'useDownload' => true, 'useOrganization' => true, 'useCaller' => false, 'useTeam' => false, 'useAgent' => false, 'useDateToday' => false, 'useDateThisMonth' => true, 'useDateOtherMonth' => true, 'useDateOtherYear' => true, 'useDateRange' => false])
+    @livewire('utils.filter', ['table' => 'pages.dashboard.section.data', 'useType' => true, 'useStatus' => false, 'useDate' => true, 'useSearch' => false, 'useDownload' => true, 'useOrganization' => true, 'useCaller' => false, 'useTeam' => false, 'useAgent' => false, 'useDateToday' => false, 'useDateThisMonth' => true, 'useDateOtherMonth' => true, 'useDateOtherYear' => false, 'useDateRange' => false])
     @livewire('pages.dashboard.section.data')
 </div>
