@@ -11,6 +11,7 @@ use Livewire\Attributes\Computed;
 
 class Data extends Component
 {
+    public $barChartTotalTicketPerMonth;
     public $barChartHandlingRequest;
     public $counter;
 
@@ -36,7 +37,7 @@ class Data extends Component
     {
         $this->counter = $this->counter();
         $this->barChartHandlingRequest = self::barChartHandlingRequestPerDept();
-        // $this->barChartTotalTicketPerMonth = self::barChartTotalTicketPerMonth();
+        $this->barChartTotalTicketPerMonth = self::barChartTotalTicketPerMonth();
     }
     
     #[Computed]
@@ -89,20 +90,17 @@ class Data extends Component
 
     public function barChartTotalTicketPerMonth()
     {
-        $data['title'] = 'Handling Request Per Department';
+        $data['title'] = 'Total Ticket per Month ('. $this->getMonth() .')';
 
-        // dd($this->getDateList());
-        $data['legend'] = Contact::classTeam()->select(['id', 'name'])->pluck('name')->toArray();
+        $data['legend'] = $this->getDateList()['label'];
 
         $type = $this->params['selectedType'][0] ?? 'UserRequest';
 
         $counter = [];
-        foreach (Contact::classTeam()->select(['id', 'name'])->get() as $item) {
+        foreach ($this->getDateList()['date'] as $item) {
             $this->params['selectedType'] = [$type];
-            $this->params['selectedTeam'] = [$item->id];
-            $this->params['selectedStatus'] = []; // reset status biar tidak mempengaruhi hasil
 
-            $count = Ticket::filter($this->params)->count();
+            $count = Ticket::filter($this->params)->whereDate('start_date', $item)->count();
             
             $counter[] = $count;
         }
@@ -150,11 +148,17 @@ class Data extends Component
             return $dates; // Return empty array for unsupported dateType
         }
 
+        $label = [];
+        $date = [];
         for ($current = $start; $current <= $end; $current = strtotime('+1 day', $current)) {
-            $dates[] = date('Y-m-d', $current);
+            $date[] = date('Y-m-d', $current);
+            $label[] = date('d M', $current);
         }
 
-        return $dates;
+        return [
+            'date' => $date,
+            'label' => $label,
+        ];
     }
 
 
@@ -190,9 +194,12 @@ class Data extends Component
         $this->params = $params;
 
         $chartHandlingRequest = self::barChartHandlingRequestPerDept();
+        $chartTicketPerMonth = self::barChartTotalTicketPerMonth();
+
         $counter = $this->counter();
 
         $this->dispatch('on-update-handling-request-per-dept', legend: $chartHandlingRequest['legend'], series: $chartHandlingRequest['series']);
+        $this->dispatch('on-update-ticket-per-month', legend: $chartTicketPerMonth['legend'], series: $chartTicketPerMonth['series']);
 
         $this->dispatch('on-update-counter', $counter);
         // $this->resetPage();

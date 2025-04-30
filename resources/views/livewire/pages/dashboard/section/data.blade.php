@@ -19,10 +19,11 @@
         </template>
     </dl>
 
-    @php
-        $barChartHandlingRequestPerDept = $barChartHandlingRequest;
-    @endphp
     <div class="mt-5 shadow-sm bg-white p-5" wire:ignore>
-        @livewire('utils.bar-chart', ['listener' => 'on-update-handling-request-per-dept', 'id' => 'bar-chart-handling-request-per-dept', 'title' => $barChartHandlingRequestPerDept['title'], 'legend' => $barChartHandlingRequestPerDept['legend'], 'series' => $barChartHandlingRequestPerDept['series']])
+        @livewire('utils.bar-chart', ['listener' => 'on-update-handling-request-per-dept', 'id' => 'bar-chart-handling-request-per-dept', 'title' => $barChartHandlingRequest['title'], 'legend' => $barChartHandlingRequest['legend'], 'series' => $barChartHandlingRequest['series']])
+    </div>
+
+    <div class="mt-5 shadow-sm bg-white p-5" wire:ignore>
+        @livewire('utils.bar-chart', ['listener' => 'on-update-ticket-per-month', 'id' => 'bar-chart-ticket-per-month', 'title' => $barChartTotalTicketPerMonth['title'], 'legend' => $barChartTotalTicketPerMonth['legend'], 'series' => $barChartTotalTicketPerMonth['series']])
     </div>
 </div>
