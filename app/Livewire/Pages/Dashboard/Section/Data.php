@@ -13,6 +13,7 @@ class Data extends Component
 {
     public $barChartHandlingRequest;
     public $counter;
+
     /* jenis tiket kita set default UserRequest */
     public $params = [
         'search' => '',
@@ -36,18 +37,22 @@ class Data extends Component
         $this->counter = $this->counter();
         $this->barChartHandlingRequest = self::barChartHandlingRequestPerDept();
     }
-
+    
+    #[Computed]
     public function counter()
     {
         $type = $this->params['selectedType'][0] ?? 'UserRequest';
         $statuses = status_by_type($type);
-        // dd($statuses);
 
         $data = [];
         foreach ($statuses as $status) {
             $this->params['selectedStatus'] = [$status['id']];
             $this->params['selectedType'] = [$type];
+            $this->params['selectedTeam'] = []; // reset team biar tidak mempengaruhi hasil
 
+            if ($status['id'] == 'new') {
+                info($this->params);
+            }
             $count = Ticket::filter($this->params)->count();
             array_push($data, [
                 'id' => $status['id'],
@@ -73,6 +78,7 @@ class Data extends Component
         foreach (Contact::classTeam()->select(['id', 'name'])->get() as $item) {
             $this->params['selectedType'] = [$type];
             $this->params['selectedTeam'] = [$item->id];
+            $this->params['selectedStatus'] = []; // reset status biar tidak mempengaruhi hasil
 
             $count = Ticket::filter($this->params)->count();
             
@@ -141,7 +147,7 @@ class Data extends Component
         $this->params = $params;
 
         $chartHandlingRequest = self::barChartHandlingRequestPerDept();
-        $counter = self::counter();
+        $counter = $this->counter();
 
         $this->dispatch('on-update-handling-request-per-dept', legend: $chartHandlingRequest['legend'], series: $chartHandlingRequest['series']);
 
