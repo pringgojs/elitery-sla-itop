@@ -28,8 +28,8 @@ class Data extends Component
         'selectedStatus' => [],
         'selectedType' => ['UserRequest'],
         'dateType' => 'other-month',
-        'month' => '2',
-        'year' => '2025',
+        'month' => '11',
+        'year' => '2024',
         'dateStart' => '',
         'dateEnd' => '',
     ];
@@ -139,9 +139,9 @@ class Data extends Component
             $seriesL2ResponseTime = [];
             $seriesL2ResolutionTime = [];
             foreach ($chunk as $agent) {
-                $seriesL1ResponseTime[] = Ticket::where('agent_l1_id', $agent->id)->sum('agent_l1_response_time');
-                $seriesL2ResponseTime[] = Ticket::where('agent_l2_id', $agent->id)->sum('agent_l2_response_time');
-                $seriesL2ResolutionTime[] = Ticket::where('agent_l2_id', $agent->id)->sum('agent_l2_resolution_time');
+                $seriesL1ResponseTime[] = Ticket::filter($this->params)->where('agent_l1_id', $agent->id)->sum('agent_l1_response_time');
+                $seriesL2ResponseTime[] = Ticket::filter($this->params)->where('agent_l2_id', $agent->id)->sum('agent_l2_response_time');
+                $seriesL2ResolutionTime[] = Ticket::filter($this->params)->where('agent_l2_id', $agent->id)->sum('agent_l2_resolution_time');
             }
 
 
@@ -252,14 +252,17 @@ class Data extends Component
 
         $chartHandlingRequest = self::barChartHandlingRequestPerDept();
         $chartTicketPerMonth = self::barChartTotalTicketPerMonth();
+        $chartSlaPerAgent = self::barChartSlaPerAgent();
 
         $counter = $this->counter();
-
+        
+        $this->dispatch('on-update-counter', $counter);
         $this->dispatch('on-update-handling-request-per-dept', legend: $chartHandlingRequest['legend'], series: $chartHandlingRequest['series']);
         $this->dispatch('on-update-ticket-per-month', legend: $chartTicketPerMonth['legend'], series: $chartTicketPerMonth['series']);
 
-        $this->dispatch('on-update-counter', $counter);
-        // $this->resetPage();
+        foreach ($chartSlaPerAgent as $index => $chart) {
+            $this->dispatch('on-update-sla-per-agent-'.$index, legend: $chart['legend'], series: $chart['series']);
+        }
     }
 
     public function render()

@@ -17,7 +17,6 @@
             initBarChart();
             cleanup(() => {
                 if (chart) {
-                    console.log('component init');
                     chart.destroy(); // Hapus chart saat komponen dihapus
                 }
             });
@@ -30,7 +29,6 @@
             series
         }) => {
             if (chart) {
-                console.log('on listener');
 
                 chart.destroy(); // Hancurkan chart lama
 
@@ -42,10 +40,7 @@
 
         function initBarChart() {
             const canvas = document.getElementById('bar-chart-{{ $id }}');
-            if (!canvas) {
-                console.error('Canvas element not found: bar-chart-{{ $id }}');
-                return;
-            }
+
             if (chart) {
                 chart.destroy()
             }
