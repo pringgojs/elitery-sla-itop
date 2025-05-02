@@ -41,6 +41,11 @@
         });
 
         function initBarChart() {
+            const canvas = document.getElementById('bar-chart-{{ $id }}');
+            if (!canvas) {
+                console.error('Canvas element not found: bar-chart-{{ $id }}');
+                return;
+            }
             if (chart) {
                 chart.destroy()
             }
