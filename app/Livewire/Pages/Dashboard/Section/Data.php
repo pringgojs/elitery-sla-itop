@@ -139,29 +139,33 @@ class Data extends Component
             $seriesL2ResponseTime = [];
             $seriesL2ResolutionTime = [];
             foreach ($chunk as $agent) {
-                $seriesL1ResponseTime[] = Ticket::filter($this->params)->where('agent_l1_id', $agent->id)->sum('agent_l1_response_time');
-                $seriesL2ResponseTime[] = Ticket::filter($this->params)->where('agent_l2_id', $agent->id)->sum('agent_l2_response_time');
-                $seriesL2ResolutionTime[] = Ticket::filter($this->params)->where('agent_l2_id', $agent->id)->sum('agent_l2_resolution_time');
+                $agentL1ResponseTime = Ticket::filter($this->params)->where('agent_l1_id', $agent->id)->sum('agent_l1_response_time');
+                $agentL2ResponseTime = Ticket::filter($this->params)->where('agent_l2_id', $agent->id)->sum('agent_l2_response_time');
+                $agentL2ResolutionTime = Ticket::filter($this->params)->where('agent_l2_id', $agent->id)->sum('agent_l2_resolution_time');
+                
+                $seriesL1ResponseTime[] = $agentL1ResponseTime > 0 ? round($agentL1ResponseTime / 60) : 0;
+                $seriesL2ResponseTime[] = $agentL2ResponseTime > 0 ? round($agentL2ResponseTime / 60) : 0;
+                $seriesL2ResolutionTime[] = $agentL2ResolutionTime > 0 ? round($agentL2ResolutionTime / 60) : 0;
             }
 
 
             $data['series'] = [
                 [
-                    'label' => 'Response Time L1',
+                    'label' => 'Response Time L1 (in minutes)',
                     'data' => $seriesL1ResponseTime,
                     'backgroundColor' => ['#10B981'],
                     'borderColor' => ['#10B981'],
                     'borderWidth' => 1,
                 ],
                 [
-                    'label' => 'Response Time L2',
+                    'label' => 'Response Time L2 (in minutes)',
                     'data' => $seriesL2ResponseTime,
                     'backgroundColor' => ['#3B82F6'],
                     'borderColor' => ['#3B82F6'],
                     'borderWidth' => 1,
                 ],
                 [
-                    'label' => 'Resolution Time L2',
+                    'label' => 'Resolution Time L2 (in minutes)',
                     'data' => $seriesL2ResolutionTime,
                     'backgroundColor' => ['#FBBF24'],
                     'borderColor' => ['#FBBF24'],
