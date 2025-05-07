@@ -27,9 +27,9 @@ class Data extends Component
         'selectedTeam' => [],
         'selectedStatus' => [],
         'selectedType' => ['UserRequest'],
-        'dateType' => 'other-month',
-        'month' => '11',
-        'year' => '2024',
+        'dateType' => 'this-month',
+        'month' => '',
+        'year' => '',
         'dateStart' => '',
         'dateEnd' => '',
     ];
@@ -198,6 +198,10 @@ class Data extends Component
     public function getDateList()
     {
         $dates = [];
+
+        if (!$this->params['dateType']) {
+            $this->params['dateType'] = 'this-month';
+        }
 
         if ($this->params['dateType'] == 'this-month') {
             $start = strtotime(date('Y-m-01'));

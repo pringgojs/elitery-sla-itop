@@ -1,5 +1,12 @@
 <div>
-    <div class="font-bold">{{ $title }}</div>
+    <div class="sm:flex sm:items-center mb-5">
+        <div class="sm:flex-auto">
+            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ $title }}</h1>
+        </div>
+        <div wire:loading class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+            @livewire('utils.loading', key(\Illuminate\Support\Str::random(10)))
+        </div>
+    </div>
     <div wire:ignore>
         <canvas id="bar-chart-{{ $id }}"></canvas>
     </div>
