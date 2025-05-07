@@ -405,7 +405,7 @@
                         team: [],
                         agent: [],
                         agent_l2: [],
-                        type: [],
+                        type: @entangle('type') ?? [],
                         status: [],
                     },
                     dateType: @entangle('dateType'),

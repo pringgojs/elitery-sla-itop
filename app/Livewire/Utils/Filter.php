@@ -39,6 +39,9 @@ class Filter extends Component
 
     public $params;
 
+    /* jenis tiket */
+    public $type;
+
     /* use utilitas filter */
     public $useArea = false;
 
@@ -72,7 +75,10 @@ class Filter extends Component
     
     public function mount($table, $positionType = null)
     {
-        $this->dateType = request()->input('dateType') ? : '';
+        if (request()->input('dateType')) {
+            $this->dateType = request()->input('dateType');
+        }
+
         $this->organizations = Organization::select(['id', 'name'])->orderByDefault()->get();
         $this->teams = Contact::classTeam()->select(['id', 'name'])->get();
         $this->callers = Contact::selectFullName()->get();
