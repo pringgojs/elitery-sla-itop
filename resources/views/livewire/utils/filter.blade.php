@@ -405,7 +405,7 @@
                         team: [],
                         agent: [],
                         agent_l2: [],
-                        type: @entangle('type') ?? [],
+                        type: [@js($type)],
                         status: [],
                     },
                     dateType: @entangle('dateType'),
@@ -414,6 +414,7 @@
                     dateStart: '',
                     dateEnd: '',
                     init() {
+                        console.log('Filter initialized', @js('type'));
                         // Initialization logic if needed
                     },
                     getFilteredData(type) {
