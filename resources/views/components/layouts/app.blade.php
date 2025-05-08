@@ -83,6 +83,7 @@
         </footer>
         <!-- ========== END FOOTER ========== -->
     </div>
+    <x-utils.notification />
 
     @stack('modals')
     @livewireScripts

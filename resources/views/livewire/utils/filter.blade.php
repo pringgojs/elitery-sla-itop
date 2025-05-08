@@ -426,6 +426,17 @@
                     },
                     toggleSelection(type, item) {
                         if (type === 'type') {
+                            // Cek apakah pengguna mencoba menghapus filter 'type' terakhir
+                            if (this.selected[type].length === 1 && this.selected[type][0].id === item.id) {
+                                alert('You should at least select one of Type.');
+                                // notification({
+                                //     type: 'error',
+                                //     title: 'Error',
+                                //     description: 'You should at least select one of Type',
+                                //     position: 'top-right'
+                                // })
+                                // return; // Batalkan aksi penghapusan
+                            }
                             // Batasi pilihan hanya satu untuk filter 'type'
                             this.selected[type] = [item]; // Hanya simpan item yang baru dipilih
                             // Perbarui data 'statuses' berdasarkan 'type' yang dipilih
