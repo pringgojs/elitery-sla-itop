@@ -19,7 +19,7 @@
             @csrf
 
             <div>
-                <x-label for="email" value="{{ __('Email atau username') }}" />
+                <x-label for="email" value="{{ __('Email or username') }}" />
                 <x-input id="email" class="block mt-1 w-full" type="text" name="email" :value="old('email')"
                     required autofocus autocomplete="username" />
             </div>
@@ -33,7 +33,7 @@
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
                     <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Ingat saya') }}</span>
+                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
 
@@ -46,7 +46,7 @@
                 @endif
 
                 <x-button class=" bg-green-600 w-full text-center items-center justify-center normal-case	">
-                    {{ __('Masuk') }}
+                    {{ __('Login') }}
                 </x-button>
             </div>
         </form>
