@@ -405,7 +405,7 @@
                         team: [],
                         agent: [],
                         agent_l2: [],
-                        type: [@js($type)],
+                        type: @js($type) ? [@js($type)] : [],
                         status: [],
                     },
                     dateType: @entangle('dateType'),
