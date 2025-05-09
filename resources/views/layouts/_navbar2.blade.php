@@ -44,7 +44,7 @@
             <div
                 class="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
                 <div class="py-2 md:py-0 flex flex-col md:flex-row md:items-center md:justify-end gap-0.5 md:gap-1">
-                    <a class="p-2 flex items-center text-sm text-blue-600 focus:outline-none focus:text-blue-600 dark:text-blue-500 dark:focus:text-blue-500"
+                    <a class="p-2 flex items-center text-sm @if (request()->is('dashboard')) font-bold text-green-800 @else text-gray-800 @endif"
                         href="{{ url('/dashboard') }}" wire:navigate aria-current="page">
                         <svg class="shrink-0 size-4 me-3 md:me-2 block md:hidden" xmlns="http://www.w3.org/2000/svg"
                             width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -55,7 +55,7 @@
                         </svg>
                         Dashboard
                     </a>
-                    <a class="p-2 flex items-center text-sm text-gray-800 focus:outline-none focus:text-blue-600 dark:text-blue-500 dark:focus:text-blue-500"
+                    <a class="p-2 flex items-center text-sm  @if (request()->is('ticket')) font-bold text-green-800  @else text-gray-800 @endif"
                         href="{{ route('ticket.index') }}" wire:navigate aria-current="page">
                         Ticket
                     </a>
@@ -64,7 +64,7 @@
                         <div
                             class="hs-dropdown [--strategy:static] md:[--strategy:fixed] [--adaptive:none] [--is-collapse:true] md:[--is-collapse:false] ">
                             <button id="dropdown-hs-laporan-user" type="button"
-                                class="hs-dropdown-toggle w-full p-2 flex items-center text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
+                                class="hs-dropdown-toggle w-full p-2 flex items-center text-sm @if (request()->is('user')) font-bold text-green-800 @elseif(request()->is('role')) font-bold text-green-800 @elseif(request()->is('permission')) font-bold text-green-800 @else text-gray-800 @endif"
                                 aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
                                 <svg class="shrink-0 size-4 me-3 md:me-2 block md:hidden" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
