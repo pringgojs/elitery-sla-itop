@@ -29,6 +29,12 @@ class Ticket extends Model
         'sla_last_check',
     ];
 
+    public function getSlaLastCheckAttribute($value)
+    {
+        // Ubah time zone dari UTC ke UTC+7
+        return Carbon::parse($value)->setTimezone('Asia/Jakarta');
+    }
+
     /**
      * Relasi ke model Organization dengan foreign key org_id.
      */
