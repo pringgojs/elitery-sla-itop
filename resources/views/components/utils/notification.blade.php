@@ -1,11 +1,6 @@
 <div x-data="globalNotification()" x-init="init()" x-show="visible" x-transition x-cloak
-    class="fixed z-50 p-4 w-80 rounded-lg shadow-lg bg-red-200" :class="positionClasses">
+    class="fixed z-50 p-4 w-80 rounded-lg shadow-lg " :class="positionClasses + ' ' + typeClasses.container">
     <div :class="typeClasses.container" class="flex items-start space-x-3">
-        <svg :class="typeClasses.icon" class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path x-show="type === 'success'" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            <path x-show="type === 'error'" stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
         <div class="flex-1">
             <h4 class="font-semibold text-sm" x-text="title"></h4>
             <p class="text-xs mt-1 text-gray-700" x-text="description"></p>
@@ -34,7 +29,7 @@
                     title = '',
                     description = '',
                     position = 'top-right',
-                    duration = 5000
+                    duration = 50000000
                 }) => {
                     this.type = type
                     this.title = title

@@ -8,6 +8,6 @@
     </div>
 
     {{-- default filter: dateType = bulan ini, type: [UserRequest]  --}}
-    @livewire('utils.filter', ['table' => 'pages.dashboard.section.data', 'dateType' => 'this-month', 'type' => ['id' => 'UserRequest', 'name' => 'User Request'], 'useType' => true, 'useStatus' => false, 'useDate' => true, 'useSearch' => false, 'useDownload' => true, 'useOrganization' => true, 'useCaller' => false, 'useTeam' => false, 'useAgent' => false, 'useDateToday' => false, 'useDateThisMonth' => true, 'useDateOtherMonth' => true, 'useDateOtherYear' => false, 'useDateRange' => false])
+    @livewire('utils.filter', ['table' => 'pages.dashboard.section.data', 'dateType' => 'this-month', 'requireType' => true, 'type' => ['id' => 'UserRequest', 'name' => 'User Request'], 'useType' => true, 'useStatus' => false, 'useDate' => true, 'useSearch' => false, 'useDownload' => true, 'useOrganization' => true, 'useCaller' => false, 'useTeam' => false, 'useAgent' => false, 'useDateToday' => false, 'useDateThisMonth' => true, 'useDateOtherMonth' => true, 'useDateOtherYear' => false, 'useDateRange' => false])
     @livewire('pages.dashboard.section.data')
 </div>

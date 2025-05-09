@@ -72,6 +72,8 @@ class Filter extends Component
     public $useType = false;
 
     public $useDownload = false;
+
+    public $requireType = false;
     
     public function mount($table, $positionType = null)
     {
