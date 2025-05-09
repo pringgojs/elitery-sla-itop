@@ -31,8 +31,10 @@ class Ticket extends Model
 
     public function getSlaLastCheckAttribute($value)
     {
+        // echo $value;
         // Ubah time zone dari UTC ke UTC+7
         return Carbon::parse($value)->setTimezone('Asia/Jakarta');
+        // dd($return);
     }
 
     /**
@@ -279,7 +281,7 @@ class Ticket extends Model
             'agent_l2_name' => $agentL2['agent'] ?? null,
             'agent_l2_response_time' => $agentL2['response_time'] ?? 0,
             'agent_l2_resolution_time' => $agentL2['resolution_time'] ?? 0,
-            'sla_last_check' => now(),
+            'sla_last_check' => Carbon::now()->setTimezone('UTC'),
         ]);
     }
 
