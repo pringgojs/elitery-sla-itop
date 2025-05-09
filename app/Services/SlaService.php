@@ -22,12 +22,12 @@ class SlaService
         $this->ticketRequest = $this->ticket->ticketRequest ?? null;
         $this->ticketIncident = $this->ticket->ticketIncident ?? null;
 
-        if (!$this->ticketRequest || !$this->ticketIncident) return []; // Jika tidak ada ticket request dan ticket incident, return array kosong
+        if (!$this->ticketRequest && !$this->ticketIncident) return []; // Jika tidak ada ticket request dan ticket incident, return array kosong
     }
 
     public function getAgentL1()
     {
-        if (!$this->ticketRequest || !$this->ticketIncident) return [];
+        if (!$this->ticketRequest && !$this->ticketIncident) return [];
 
         $publicLog = $this->ticketRequest->getPublicLogIndex() ?? $this->ticketIncident->getPublicLogIndex();
         $privateLog = $this->ticket->getPrivateLogIndex();
