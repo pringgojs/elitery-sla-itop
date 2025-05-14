@@ -264,8 +264,10 @@ class Ticket extends Model
     public function recalculate()
     {
         $slaService = new SlaService($this);
+        info($this->ref);
         if (!$slaService) return;
-        
+
+
         $agentL1 = $slaService->getAgentL1();
         $agentL2 = $slaService->getAgentL2();
 

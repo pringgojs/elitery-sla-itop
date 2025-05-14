@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\Contact;
 use App\Constants\Constants;
 use App\Services\SlaService;
+use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
 
 class Test extends Command
@@ -29,8 +30,19 @@ class Test extends Command
      */
     public function handle()
     {
-        self::sla();
+        self::carbon();
+        // self::sla();
         // self::chartCarousel();
+    }
+
+    public function carbon()
+    {
+        $utc = Carbon::now()->setTimezone('UTC');
+        // dd($utc);
+        
+        $value = '2025-05-14 02:57:49';
+        $carbon = Carbon::parse($value)->setTimezone('Asia/Jakarta'); 
+        dd($carbon);
     }
 
     public function chartCarousel()
