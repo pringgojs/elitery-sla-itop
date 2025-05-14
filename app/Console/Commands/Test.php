@@ -30,8 +30,8 @@ class Test extends Command
      */
     public function handle()
     {
-        self::carbon();
-        // self::sla();
+        // self::carbon();
+        self::sla();
         // self::chartCarousel();
     }
 
@@ -102,11 +102,12 @@ class Test extends Command
 
     public function sla()
     {
-        $ticket = Ticket::ref('R-002260')->first();
+        $ticket = Ticket::ref('I-000331')->first();
         $service = new SlaService($ticket);
+        // dd($service);
         // $logs = $ticket->getPrivateLog();
         $l1 = $service->getAgentL1();
-        dd($l1);
         $l2 = $service->getAgentL2();
+        dd($l2);
     }
 }

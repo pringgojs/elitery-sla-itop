@@ -29,9 +29,10 @@ class SlaService
     {
         if (!$this->ticketRequest && !$this->ticketIncident) return [];
 
-        $publicLog = $this->ticketRequest->getPublicLogIndex() ?? $this->ticketIncident->getPublicLogIndex();
+        $publicLog = ($this->ticketRequest ? $this->ticketRequest->getPublicLogIndex() : null) 
+            ?? ($this->ticketIncident ? $this->ticketIncident->getPublicLogIndex() : null);
+            
         $privateLog = $this->ticket->getPrivateLogIndex();
-
         if (!$publicLog && !$privateLog) return [];
 
         $firstLog = $this->getFirstLog($publicLog, $privateLog);
