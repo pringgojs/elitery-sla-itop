@@ -269,7 +269,8 @@ class Ticket extends Model
         $agentL1 = $slaService->getAgentL1();
         $agentL2 = $slaService->getAgentL2();
 
-        if (!$agentL1 || !$agentL2) {
+        if (!$agentL1 && !$agentL2) {
+
             return;
         }            
         
