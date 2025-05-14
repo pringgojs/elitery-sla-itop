@@ -7,7 +7,9 @@ use App\Models\Contact;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Helpers\ArrayHelper;
+use App\Exports\TicketExport;
 use Livewire\Attributes\Computed;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Data extends Component
 {
@@ -290,6 +292,14 @@ class Data extends Component
         }
     }
 
+    #[On('export')]
+    public function export()
+    {
+        $this->authorize('ticket.export');
+
+        return Excel::download(new TicketExport($this->params), 'ticket-'.date('Ymd').'.xlsx');
+    }
+    
     public function render()
     {
         return view('livewire.pages.dashboard.section.data');
