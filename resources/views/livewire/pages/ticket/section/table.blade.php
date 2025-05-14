@@ -60,7 +60,7 @@
                         {{ $item->agent_l2_resolution_time ? convert_seconds($item->agent_l2_resolution_time) : 0 }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {{ date_format_human($item->sla_last_check) }}
+                        {{ $item->sla_last_check ? date_format_human($item->sla_last_check) : '-' }}
                     </td>
                 </tr>
             @endforeach

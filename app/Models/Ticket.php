@@ -31,10 +31,8 @@ class Ticket extends Model
 
     public function getSlaLastCheckAttribute($value)
     {
-        // echo $value;
         // Ubah time zone dari UTC ke UTC+7
-        return Carbon::parse($value)->setTimezone('Asia/Jakarta');
-        // dd($return);
+        return $value ? Carbon::parse($value)->setTimezone('Asia/Jakarta') : null;
     }
 
     /**
