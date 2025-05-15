@@ -27,9 +27,7 @@ class TicketExport implements FromCollection, WithHeadings, WithMapping
             ->with([
                 'organization',
                 'agent',
-                'team' => function ($query) {
-                    $query->selectFullName();
-                },
+                'team',
                 'caller' => function ($query) {
                     $query->selectFullName();
                 }
