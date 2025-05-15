@@ -23,7 +23,19 @@ class TicketExport implements FromCollection, WithHeadings, WithMapping
      */
     public function collection()
     {
-        return Ticket::filter($this->params)->with(['organization', 'agent', 'team', 'caller'])->orderByDefault()->get();
+        return Ticket::filter($this->params)
+            ->with([
+                'organization',
+                'agent',
+                'team' => function ($query) {
+                    $query->selectFullName();
+                },
+                'caller' => function ($query) {
+                    $query->selectFullName();
+                }
+            ])
+            ->orderByDefault()
+            ->get();
     }
 
     public function headings(): array
@@ -34,8 +46,10 @@ class TicketExport implements FromCollection, WithHeadings, WithMapping
             'Organization',
             'Number',
             'Title',
-            'Agent 1',
-            'Agent 2',
+            'Caller',
+            'Team',
+            'Agent L1',
+            'Agent L2',
             'Response Time L1',
             'Response Time L2',
             'Resolution Time',
@@ -52,6 +66,8 @@ class TicketExport implements FromCollection, WithHeadings, WithMapping
             $item->organization->name ?? '-',
             $item->ref,
             $item->title,
+            $item->caller->name ?? '-',
+            $item->team->name ?? '-',
             $item->agent_l1_name,
             $item->agent_l2_name,
             $item->agent_l1_response_time ? convert_seconds($item->agent_l1_response_time) : 0,
