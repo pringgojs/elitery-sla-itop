@@ -28,11 +28,13 @@
     </dl>
 
     <div class="mt-5 shadow-sm bg-white p-5" wire:ignore>
-        @livewire('utils.bar-chart', ['listener' => 'on-update-handling-request-per-dept', 'id' => 'bar-chart-handling-request-per-dept', 'title' => $barChartHandlingRequest['title'], 'legend' => $barChartHandlingRequest['legend'], 'series' => $barChartHandlingRequest['series']])
+        <livewire:utils.bar-chart lazy :listener="'on-update-handling-request-per-dept'" :id="'bar-chart-handling-request-per-dept'" :title="$barChartHandlingRequest['title']" :legend="$barChartHandlingRequest['legend']"
+            :series="$barChartHandlingRequest['series']" />
     </div>
 
     <div class="mt-5 shadow-sm bg-white p-5" wire:ignore>
-        @livewire('utils.bar-chart', ['listener' => 'on-update-ticket-per-month', 'id' => 'bar-chart-ticket-per-month', 'title' => $barChartTotalTicketPerMonth['title'], 'legend' => $barChartTotalTicketPerMonth['legend'], 'series' => $barChartTotalTicketPerMonth['series']])
+        <livewire:utils.bar-chart lazy :listener="'on-update-ticket-per-month'" :id="'bar-chart-ticket-per-month'" :title="$barChartTotalTicketPerMonth['title']" :legend="$barChartTotalTicketPerMonth['legend']"
+            :series="$barChartTotalTicketPerMonth['series']" />
     </div>
 
     {{-- sla --}}
@@ -48,7 +50,8 @@
                 class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
                 @foreach ($barChartSlaPerAgent as $i => $item)
                     <div class="hs-carousel-slide bg-white p-5">
-                        @livewire('utils.bar-chart', ['listener' => 'on-update-sla-per-agent-' . $i, 'id' => 'bar-chart-sla-per-agent-' . $i, 'title' => $item['title'], 'legend' => $item['legend'], 'series' => $item['series']], key('wire-bar-chart-sla-per-agent-' . $i))
+                        <livewire:utils.bar-chart :listener="'on-update-sla-per-agent-' . $i" :id="'bar-chart-sla-per-agent-' . $i" :title="$item['title']"
+                            :legend="$item['legend']" :series="$item['series']" :key="'wire-bar-chart-sla-per-agent-' . $i" />
                     </div>
                 @endforeach
             </div>
