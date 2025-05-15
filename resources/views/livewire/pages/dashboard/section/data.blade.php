@@ -45,7 +45,7 @@
     "isAutoPlay": false
   }'
         class="relative mt-5">
-        <div class="hs-carousel relative overflow-hidden w-full min-h-96 bg-white rounded-lg" style="height:700px">
+        <div class="hs-carousel relative overflow-hidden w-full h-96 bg-white rounded-lg" style="height:600px">
             <div wire:ignore
                 class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
                 @foreach ($barChartSlaPerAgent as $i => $item)

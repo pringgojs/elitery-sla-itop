@@ -1,80 +1,31 @@
 <div>
-    <div x-data="{
+
+    <div x-data="barChart()" x-init="initBarChart({
+        id: '{{ $id }}',
+        series: @js($series),
+        legend: @js($legend),
         title: @js($title),
-        updateTitle(t) {
-            this.title = t
-        }
-    }" class="sm:flex sm:items-center mb-5"
-        x-on:bar-chart-update-title-{{ $id }}.window="updateTitle($event.detail)">
-        <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900" x-html="title"></h1>
+        listener: '{{ $listener }}'
+    })"
+        x-on:bar-chart-update-title-{{ $id }}.window="updateTitle($event.detail)" class="p-2">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-2">
+            <!-- Title Section -->
+            <div class=" px-6 py-4 w-full mr-2">
+                <h1 class="text-xl font-semibold" x-html="chartTitle"></h1>
+            </div>
+
+            <!-- Loading Circle -->
+            <div wire:loading class="flex-shrink-0 flex items-center justify-center">
+                @livewire('utils.loading', key(\Illuminate\Support\Str::random(10)))
+            </div>
         </div>
-        <div wire:loading class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            @livewire('utils.loading', key(\Illuminate\Support\Str::random(10)))
+        <!-- Content Area -->
+        <div class="text-center text-lg font-medium h-96">
+            <canvas id="bar-chart-{{ $id }}"></canvas>
+
+            {{-- CONTENT --}}
         </div>
     </div>
-    <div wire:ignore>
-        <canvas id="bar-chart-{{ $id }}"></canvas>
-    </div>
+
 </div>
-@script
-    <script>
-        let chart;
-        let currentSeries = @json($series); // Menyimpan data awal
-        let currentCategories = @json($legend); // Menyimpan kategori awal
-
-        Livewire.hook('component.init', ({
-            component,
-            cleanup
-        }) => {
-            initBarChart();
-            cleanup(() => {
-                if (chart) {
-                    chart.destroy(); // Hapus chart saat komponen dihapus
-                }
-            });
-        });
-
-
-        /* disini, legend dan series harus dikirim dari BAKEND. meskipun properti sudah diset reaktif, nyatanya ketika dipanggil di livewire on update data masih data old */
-        Livewire.on('{{ $listener }}', ({
-            legend,
-            series
-        }) => {
-            if (chart) {
-
-                chart.destroy(); // Hancurkan chart lama
-
-                currentSeries = series;
-                currentCategories = legend;
-                initBarChart();
-            }
-        });
-
-        function initBarChart() {
-            const canvas = document.getElementById('bar-chart-{{ $id }}');
-
-            if (chart) {
-                chart.destroy()
-            }
-
-            const ctx = document.getElementById('bar-chart-{{ $id }}').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: currentCategories,
-                    datasets: currentSeries
-                },
-                options: {
-                    responsive: true, // Chart akan responsif
-                    // maintainAspectRatio: false, // Menonaktifkan rasio default
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        }
-    </script>
-@endscript

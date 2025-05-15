@@ -1,6 +1,4 @@
 <div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <div class="sm:flex sm:items-center mb-5">
         <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">Dashboard</h1>

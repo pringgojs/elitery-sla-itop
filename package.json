@@ -19,6 +19,7 @@
         "@googlemaps/js-api-loader": "^1.16.8",
         "@ryangjchandler/alpine-clipboard": "^2.3.0",
         "apexcharts": "^3.53.0",
+        "chart.js": "^4.4.9",
         "flowbite": "^2.3.0",
         "preline": "^2.4.1"
     }

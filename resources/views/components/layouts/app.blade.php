@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     </script>
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/bar-chart.js'])
 
     <!-- Styles -->
     @livewireStyles
