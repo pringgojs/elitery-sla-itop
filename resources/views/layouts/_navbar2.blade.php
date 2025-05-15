@@ -56,7 +56,7 @@
                         Dashboard
                     </a>
                     <a class="p-2 flex items-center text-sm  @if (request()->is('ticket')) font-bold text-green-800  @else text-gray-800 @endif"
-                        href="{{ route('ticket.index') }}" wire:navigate aria-current="page">
+                        href="{{ route('ticket.index') }}" wire:navigate.hover aria-current="page">
                         Ticket
                     </a>
                     @can('menu.management.user')
@@ -89,19 +89,19 @@
                                 <div class="py-1 md:px-1 space-y-0.5">
                                     @can('user.view')
                                         <a class="py-2.5 px-2 flex items-center text-sm text-gray-800 hover:text-gray-500 hover:bg-gray-100 rounded-lg focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                                            href="{{ route('user.index') }}" wire:navigate>
+                                            href="{{ route('user.index') }}" wire:navigate.hover>
                                             User
                                         </a>
                                     @endcan
                                     @can('role.view')
                                         <a class="py-2.5 px-2 flex items-center text-sm text-gray-800 hover:text-gray-500 hover:bg-gray-100 rounded-lg focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                                            href="{{ route('role.index') }}" wire:navigate>
+                                            href="{{ route('role.index') }}" wire:navigate.hover>
                                             Role
                                         </a>
                                     @endcan
                                     @can('permission.view')
                                         <a class="py-2.5 px-2 flex items-center text-sm text-gray-800 hover:text-gray-500 hover:bg-gray-100 rounded-lg focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                                            href="{{ route('permission.index') }}" wire:navigate>
+                                            href="{{ route('permission.index') }}" wire:navigate.hover>
                                             Permission
                                         </a>
                                     @endcan
