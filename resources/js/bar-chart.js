@@ -1,8 +1,6 @@
 import Chart from "chart.js/auto";
 
 Livewire.hook("component.init", ({ component, cleanup }) => {
-    console.log("component bar-chart.js");
-
     Alpine.data("barChart", () => ({
         chart: null,
         currentSeries: [],
@@ -16,15 +14,13 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
             this.currentCategories = legend;
             this.chartTitle = title;
             this.chartListener = listener;
-            console.log(
-                `Initializing bar chart with ID: ${this.chartId}, title: ${this.chartTitle}`
-            );
 
             this.renderChart();
 
             // Listen for Livewire updates
             if (window.Livewire) {
                 Livewire.on(listener, ({ legend, series }) => {
+                    this.destroyChart();
                     this.currentSeries = series;
                     this.currentCategories = legend;
                     this.renderChart();
@@ -59,7 +55,7 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { position: "top" },
-                        title: { display: true, text: this.chartTitle },
+                        title: { display: false, text: this.chartTitle },
                     },
                     scales: {
                         y: { beginAtZero: true },
