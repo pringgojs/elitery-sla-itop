@@ -10,6 +10,7 @@ use App\Helpers\ArrayHelper;
 use App\Exports\TicketExport;
 use Livewire\Attributes\Computed;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Livewire\Pages\Dashboard\Section\Table;
 
 class Data extends Component
 {
@@ -191,6 +192,8 @@ class Data extends Component
         return $charts;
     }
 
+    
+
     public function getMonth()
     {
         if ($this->params['dateType'] == 'this-month') {
@@ -278,6 +281,7 @@ class Data extends Component
 
         $counter = $this->counter();
         
+        $this->dispatch('filter', params: $params)->to(Table::class);
         $this->dispatch('on-update-counter', $counter);
         $this->dispatch('on-update-handling-request-per-dept', legend: $chartHandlingRequest['legend'], series: $chartHandlingRequest['series']);
         $this->dispatch('on-update-ticket-per-month', legend: $chartTicketPerMonth['legend'], series: $chartTicketPerMonth['series']);
@@ -287,9 +291,9 @@ class Data extends Component
         $key = 'bar-chart-ticket-per-month';
         $this->dispatch('bar-chart-update-title-'.$key, self::barChartTotalTicketPerMonthTitle());
         
-        foreach ($chartSlaPerAgent as $index => $chart) {
-            $this->dispatch('on-update-sla-per-agent-'.$index, legend: $chart['legend'], series: $chart['series']);
-        }
+        // foreach ($chartSlaPerAgent as $index => $chart) {
+        //     $this->dispatch('on-update-sla-per-agent-'.$index, legend: $chart['legend'], series: $chart['series']);
+        // }
     }
 
     #[On('export')]
