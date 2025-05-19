@@ -66,7 +66,7 @@ class Data extends Component
         return $data;
     }
 
-    public function barChartHandlingRequestTitle()
+    public function handlingRequestTitle()
     {
         $type = $this->params['selectedType'][0] ?? 'UserRequest';
 
@@ -76,7 +76,7 @@ class Data extends Component
     // #[Computed]
     public function barChartHandlingRequestPerDept()
     {
-        $data['title'] = self::barChartHandlingRequestTitle();
+        $data['title'] = self::handlingRequestTitle();
 
         $data['legend'] = Contact::classTeam()->select(['id', 'name'])->pluck('name')->toArray();
 
@@ -99,14 +99,14 @@ class Data extends Component
         return $data;
     }
 
-    public function barChartTotalTicketPerMonthTitle()
+    public function ticketPerMonthTitle()
     {
         return 'Total Ticket per Month ('. $this->getMonth() .')';
     }
 
     public function barChartTotalTicketPerMonth()
     {
-        $data['title'] = self::barChartTotalTicketPerMonthTitle();
+        $data['title'] = self::ticketPerMonthTitle();
 
         $data['legend'] = $this->getDateList()['label'];
 
@@ -195,7 +195,7 @@ class Data extends Component
     #[Computed]
     public function treemapChartTicketPerDept()
     {
-        $data['title'] = self::barChartHandlingRequestTitle();
+        $data['title'] = self::handlingRequestTitle();
 
         $data['legend'] = Contact::classTeam()->select(['id', 'name'])->pluck('name')->toArray();
 
@@ -311,25 +311,18 @@ class Data extends Component
 
         $this->params = $params;
 
-        $chartHandlingRequest = self::barChartHandlingRequestPerDept();
+        $chartHandlingRequest = self::treemapChartTicketPerDept();
         $chartTicketPerMonth = self::barChartTotalTicketPerMonth();
         $chartSlaPerAgent = self::barChartSlaPerAgent();
-
         $counter = $this->counter();
+
         
         $this->dispatch('filter', params: $params)->to(Table::class);
         $this->dispatch('on-update-counter', $counter);
-        $this->dispatch('on-update-handling-request-per-dept', legend: $chartHandlingRequest['legend'], series: $chartHandlingRequest['series']);
         $this->dispatch('on-update-ticket-per-month', legend: $chartTicketPerMonth['legend'], series: $chartTicketPerMonth['series']);
         
-        $key = 'bar-chart-handling-request-per-dept';
-        $this->dispatch('bar-chart-update-title-'.$key, self::barChartHandlingRequestTitle());
         $key = 'bar-chart-ticket-per-month';
-        $this->dispatch('bar-chart-update-title-'.$key, self::barChartTotalTicketPerMonthTitle());
-        
-        // foreach ($chartSlaPerAgent as $index => $chart) {
-        //     $this->dispatch('on-update-sla-per-agent-'.$index, legend: $chart['legend'], series: $chart['series']);
-        // }
+        $this->dispatch('bar-chart-update-title-'.$key, self::ticketPerMonthTitle());
     }
 
     #[On('export')]

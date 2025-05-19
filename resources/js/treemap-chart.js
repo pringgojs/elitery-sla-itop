@@ -35,38 +35,6 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
         },
 
         renderChart() {
-            const DATA = [
-                {
-                    what: "Apples",
-                    value: 98,
-                    color: "rgb(191, 77, 114)",
-                },
-                {
-                    what: "Orange",
-                    value: 75,
-                    color: "rgb(228, 148, 55)",
-                },
-                {
-                    what: "Lime",
-                    value: 69,
-                    color: "rgb(147, 119, 214)",
-                },
-                {
-                    what: "Grapes",
-                    value: 55,
-                    color: "rgb(80, 134, 55)",
-                },
-                {
-                    what: "Apricots",
-                    value: 49,
-                    color: "rgb(90, 97, 110)",
-                },
-                {
-                    what: "Blackberries",
-                    value: 35,
-                    color: "rgb(34, 38, 82)",
-                },
-            ];
             const canvas = document.getElementById(
                 `treemap-chart-${this.chartId}`
             );
