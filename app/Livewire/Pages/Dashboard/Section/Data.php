@@ -192,6 +192,42 @@ class Data extends Component
         return $charts;
     }
 
+    #[Computed]
+    public function treemapChartTicketPerDept()
+    {
+        $data['title'] = self::barChartHandlingRequestTitle();
+
+        $data['legend'] = Contact::classTeam()->select(['id', 'name'])->pluck('name')->toArray();
+
+        $colors = $this->generateRandomColors(count($data['legend']));
+
+        $counter = [];
+        foreach (Contact::classTeam()->select(['id', 'name'])->get() as $i => $item) {
+            $count = Ticket::filter($this->params)->where('team_id', $item->id)->count();
+            $series = [
+                'what' => $item->name,
+                'value' => $count,
+                'color' => $colors[$i],
+            ];
+
+            array_push($counter, $series);
+        }
+
+        $data['series'] = $counter;
+        $data['label'] = 'Department';
+
+        return $data;
+    }
+
+    public function generateRandomColors($count = 5)
+    {
+        $colors = [];
+        for ($i = 0; $i < $count; $i++) {
+            $colors[] = sprintf("#%06X", mt_rand(0, 0xFFFFFF));
+        }
+
+        return $colors;
+    }
     
 
     public function getMonth()

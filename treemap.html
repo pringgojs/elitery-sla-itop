@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Chart.js Treemap with Legend</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@1.3.0/dist/chartjs-chart-treemap.min.js"></script>
+        <style>
+            #legend-container {
+                margin-top: 10px;
+            }
+            .legend-item {
+                display: inline-block;
+                margin-right: 10px;
+            }
+            .legend-color {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                margin-right: 5px;
+                vertical-align: middle;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="treemapChart" width="600" height="400"></canvas>
+        <div id="legend-container"></div>
+
+        <script>
+            const categories = ["Fruit", "Vegetable", "Meat"];
+            const colors = {
+                Fruit: "#f87171",
+                Vegetable: "#34d399",
+                Meat: "#60a5fa",
+            };
+
+            const data = [
+                { category: "Fruit", label: "Apple", value: 10 },
+                { category: "Fruit", label: "Banana", value: 5 },
+                { category: "Vegetable", label: "Carrot", value: 7 },
+                { category: "Vegetable", label: "Broccoli", value: 3 },
+                { category: "Meat", label: "Chicken", value: 8 },
+                { category: "Meat", label: "Beef", value: 6 },
+            ];
+
+            const ctx = document
+                .getElementById("treemapChart")
+                .getContext("2d");
+
+            const treemapChart = new Chart(ctx, {
+                type: "treemap",
+                data: {
+                    datasets: [
+                        {
+                            tree: data,
+                            key: "value",
+                            groups: ["catefgory", "label"],
+                            backgroundColor(ctx) {
+                                const category = ctx.raw._data.category;
+                                return colors[category] || "#ddd";
+                            },
+                            labels: {
+                                display: true,
+                                formatter: (ctx) => ctx.raw.label,
+                            },
+                        },
+                    ],
+                },
+                options: {
+                    plugins: {
+                        legend: { display: false }, // we use custom legend below
+                        tooltip: {
+                            callbacks: {
+                                label(context) {
+                                    const d = context.raw._data;
+                                    return `${d.category} - ${d.label}: ${d.value}`;
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            // Custom Legend
+            const legendContainer = document.getElementById("legend-container");
+            categories.forEach((cat) => {
+                const div = document.createElement("div");
+                div.classList.add("legend-item");
+                div.innerHTML = `<span class="legend-color" style="background-color:${colors[cat]}"></span>${cat}`;
+                legendContainer.appendChild(div);
+            });
+        </script>
+    </body>
+</html>

@@ -9,6 +9,7 @@ export default defineConfig({
                 "resources/js/app.js",
                 "resources/js/map.js",
                 "resources/js/bar-chart.js",
+                "resources/js/treemap-chart.js",
             ],
             refresh: true,
         }),

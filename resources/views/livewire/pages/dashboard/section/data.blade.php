@@ -27,10 +27,12 @@
         </template>
     </dl>
 
-    <div class="mt-5 shadow-sm bg-white p-5" wire:ignore>
-        <livewire:utils.bar-chart lazy listener="on-update-handling-request-per-dept"
-            id="bar-chart-handling-request-per-dept" :title="$barChartHandlingRequest['title']" :legend="$barChartHandlingRequest['legend']" :series="$barChartHandlingRequest['series']" />
-    </div>
+
+    @php
+        $treemapSource = $this->treemapChartTicketPerDept;
+    @endphp
+    <livewire:utils.treemap-chart lazy listener="on-update-handling-request-per-dept"
+        id="treemap-chart-handling-request-per-dept" :title="$treemapSource['title']" :label="$treemapSource['label']" :series="$treemapSource['series']" />
 
     <div class="mt-5 shadow-sm bg-white p-5" wire:ignore>
         <livewire:utils.bar-chart lazy listener="on-update-ticket-per-month" id="bar-chart-ticket-per-month"
