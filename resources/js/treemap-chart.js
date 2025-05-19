@@ -88,6 +88,8 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
                     ],
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     events: [],
                     plugins: {
                         title: {

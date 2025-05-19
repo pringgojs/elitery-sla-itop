@@ -31,7 +31,7 @@
     @php
         $treemapSource = $this->treemapChartTicketPerDept;
     @endphp
-    <div>
+    <div wire:ignore>
         <livewire:utils.treemap-chart lazy listener="on-update-handling-request-per-dept"
             id="treemap-chart-handling-request-per-dept" :title="$treemapSource['title']" :label="$treemapSource['label']" :series="$treemapSource['series']" />
     </div>
