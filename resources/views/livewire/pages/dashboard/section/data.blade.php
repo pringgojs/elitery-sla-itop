@@ -27,7 +27,6 @@
         </template>
     </dl>
 
-
     @php
         $treemapSource = $this->treemapChartTicketPerDept;
     @endphp

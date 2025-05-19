@@ -15,9 +15,6 @@ use App\Livewire\Pages\Dashboard\Section\Table;
 class Data extends Component
 {
     public $barChartTotalTicketPerMonth;
-    public $barChartHandlingRequest;
-    public $barChartSlaPerAgent;
-
     public $counter;
 
     /* jenis tiket kita set default UserRequest */
@@ -41,9 +38,7 @@ class Data extends Component
     public function mount()
     {
         $this->counter = $this->counter();
-        $this->barChartHandlingRequest = self::barChartHandlingRequestPerDept();
         $this->barChartTotalTicketPerMonth = self::barChartTotalTicketPerMonth();
-        $this->barChartSlaPerAgent = self::barChartSlaPerAgent();
     }
     
     #[Computed]
@@ -71,32 +66,6 @@ class Data extends Component
         $type = $this->params['selectedType'][0] ?? 'UserRequest';
 
         return 'Total Ticket by Department ('. $type .')';
-    }
-
-    // #[Computed]
-    public function barChartHandlingRequestPerDept()
-    {
-        $data['title'] = self::handlingRequestTitle();
-
-        $data['legend'] = Contact::classTeam()->select(['id', 'name'])->pluck('name')->toArray();
-
-
-        $counter = [];
-        foreach (Contact::classTeam()->select(['id', 'name'])->get() as $item) {
-            $counter[] = Ticket::filter($this->params)->where('team_id', $item->id)->count();
-        }
-
-        $data['series'] = [
-            [
-                'label' => self::getMonth(),
-                'data' => $counter,
-                'backgroundColor' => ['#10B981'],
-                'borderColor' => ['#10B981'],
-                'borderWidth' => 1,
-            ]
-        ];
-
-        return $data;
     }
 
     public function ticketPerMonthTitle()
@@ -132,64 +101,6 @@ class Data extends Component
         ];
 
         return $data;
-    }
-
-    public function barChartSlaPerAgent()
-    {
-        $agents = Contact::classPerson()
-            ->selectFullName()
-            ->where('org_id', 1)
-            ->get()
-            ->chunk(30);
-
-        $charts = [];
-        foreach ($agents as $chunkIndex => $chunk) {
-            $data['title'] = 'SLA by Agent (Group ' . ($chunkIndex + 1) . ')';
-
-            $data['legend'] = $chunk->pluck('name')->toArray(); // agent name
-
-            $seriesL1ResponseTime = [];
-            $seriesL2ResponseTime = [];
-            $seriesL2ResolutionTime = [];
-            foreach ($chunk as $agent) {
-                $agentL1ResponseTime = Ticket::filter($this->params)->where('agent_l1_id', $agent->id)->sum('agent_l1_response_time');
-                $agentL2ResponseTime = Ticket::filter($this->params)->where('agent_l2_id', $agent->id)->sum('agent_l2_response_time');
-                $agentL2ResolutionTime = Ticket::filter($this->params)->where('agent_l2_id', $agent->id)->sum('agent_l2_resolution_time');
-                
-                $seriesL1ResponseTime[] = $agentL1ResponseTime > 0 ? round($agentL1ResponseTime / 60) : 0;
-                $seriesL2ResponseTime[] = $agentL2ResponseTime > 0 ? round($agentL2ResponseTime / 60) : 0;
-                $seriesL2ResolutionTime[] = $agentL2ResolutionTime > 0 ? round($agentL2ResolutionTime / 60) : 0;
-            }
-
-
-            $data['series'] = [
-                [
-                    'label' => 'Response Time L1 (in minutes)',
-                    'data' => $seriesL1ResponseTime,
-                    'backgroundColor' => ['#10B981'],
-                    'borderColor' => ['#10B981'],
-                    'borderWidth' => 1,
-                ],
-                [
-                    'label' => 'Response Time L2 (in minutes)',
-                    'data' => $seriesL2ResponseTime,
-                    'backgroundColor' => ['#3B82F6'],
-                    'borderColor' => ['#3B82F6'],
-                    'borderWidth' => 1,
-                ],
-                [
-                    'label' => 'Resolution Time L2 (in minutes)',
-                    'data' => $seriesL2ResolutionTime,
-                    'backgroundColor' => ['#FBBF24'],
-                    'borderColor' => ['#FBBF24'],
-                    'borderWidth' => 1,
-                ]   
-            ];
-
-            $charts[] = $data;
-        }
-
-        return $charts;
     }
 
     #[Computed]
@@ -229,7 +140,6 @@ class Data extends Component
         return $colors;
     }
     
-
     public function getMonth()
     {
         if ($this->params['dateType'] == 'this-month') {
@@ -313,7 +223,6 @@ class Data extends Component
 
         $chartHandlingRequest = self::treemapChartTicketPerDept();
         $chartTicketPerMonth = self::barChartTotalTicketPerMonth();
-        $chartSlaPerAgent = self::barChartSlaPerAgent();
         $counter = $this->counter();
 
         
