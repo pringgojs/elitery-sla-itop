@@ -53,7 +53,7 @@ class Table extends Component
 
         // Pagination manual
         $page = request()->get('page', 1);
-        $perPage = 10;
+        $perPage = 5;
         $resultCollection = collect($result);
         $paginated = new LengthAwarePaginator(
             $resultCollection->forPage($page, $perPage),
