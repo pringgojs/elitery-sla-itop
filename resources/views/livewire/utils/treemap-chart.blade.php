@@ -7,11 +7,11 @@
         title: @js($title),
         listener: '{{ $listener }}'
     })"
-        x-on:treemap-chart-update-title-{{ $id }}.window="updateTitle($event.detail)" class="p-2">
+        x-on:treemap-chart-update-title-{{ $id }}.window="updateTitle($event.detail)" class="">
         <!-- Header -->
         <div class="flex justify-between items-center mb-2">
             <!-- Title Section -->
-            <div class=" px-6 py-4 w-full mr-2">
+            <div class=" py-4 w-full mr-2">
                 <h1 class="text-base font-semibold leading-6 text-gray-900" x-html="chartTitle"></h1>
             </div>
 
@@ -22,7 +22,7 @@
         </div>
         <!-- Content Area -->
         <div class="text-center text-lg font-medium h-96">
-            <canvas id="treemap-chart-{{ $id }}" style="width:100%; height:100%"></canvas>
+            <canvas id="treemap-chart-{{ $id }}"></canvas>
         </div>
     </div>
 
