@@ -8,7 +8,6 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
 use Illuminate\Pagination\LengthAwarePaginator;
-
 class Table extends Component
 {
     use WithPagination;
@@ -41,12 +40,15 @@ class Table extends Component
             $seriesL2ResponseTime = $agentL2ResponseTime > 0 ? round($agentL2ResponseTime / 60) : 0;
             $seriesL2ResolutionTime = $agentL2ResolutionTime > 0 ? round($agentL2ResolutionTime / 60) : 0;
 
-            $result[] = [
-                'name' => $agent->name,
-                'response_time_l1' => $seriesL1ResponseTime,
-                'response_time_l2' => $seriesL2ResponseTime,
-                'resolution_time' => $seriesL2ResolutionTime,
-            ];
+            // Hanya tambahkan jika salah satu dari tiga kolom ada isinya (tidak 0)
+            if ($seriesL1ResponseTime || $seriesL2ResponseTime || $seriesL2ResolutionTime) {
+                $result[] = [
+                    'name' => $agent->name,
+                    'response_time_l1' => $seriesL1ResponseTime . ' m',
+                    'response_time_l2' => $seriesL2ResponseTime . ' m',
+                    'resolution_time' => $seriesL2ResolutionTime . ' m',
+                ];
+            }
         }
 
         // Pagination manual
