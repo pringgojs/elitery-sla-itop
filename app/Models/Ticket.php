@@ -26,6 +26,8 @@ class Ticket extends Model
         'agent_l2_name',
         'agent_l2_response_time',
         'agent_l2_resolution_time',
+        'resolution_time_real',
+        'pending_time',
         'sla_last_check',
     ];
 
@@ -264,7 +266,6 @@ class Ticket extends Model
     public function recalculate()
     {
         $slaService = new SlaService($this);
-        info($this->ref);
         if (!$slaService) return;
 
 
@@ -284,6 +285,8 @@ class Ticket extends Model
             'agent_l2_name' => $agentL2['agent'] ?? null,
             'agent_l2_response_time' => $agentL2['response_time'] ?? 0,
             'agent_l2_resolution_time' => $agentL2['resolution_time'] ?? 0,
+            'resolution_time_real' => $agentL2['resolution_time_real'] ?? 0,
+            'pending_time' => $agentL2['pending_time'] ?? 0,
             'sla_last_check' => Carbon::now()->setTimezone('UTC'),
         ]);
     }

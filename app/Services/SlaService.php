@@ -86,9 +86,10 @@ class SlaService
 
         $totalPendingTime = $this->ticketRequest->cumulatedpending_timespent ?? $this->ticketIncident->cumulatedpending_timespent ?? 0;
         $resolutionDate = $this->ticketRequest->resolution_date ?? $this->ticketIncident->resolution_date ?? null;
-        $resolutionTime = $resolutionDate
-            ? get_time_diff_inseconds($assignmentDate, $resolutionDate) - $totalPendingTime
-            : 0;
+
+        $resolutionTimeReal = $resolutionDate
+            ? get_time_diff_inseconds($assignmentDate, $resolutionDate): 0;
+        $resolutionTime = $resolutionTimeReal - $totalPendingTime;
 
         return [
             'ref' => $this->ticket->ref,
@@ -98,9 +99,13 @@ class SlaService
             'response_time_formated' => convert_seconds($responseTime),
             'resolution_time' => $resolutionTime,
             'resolution_time_formated' => convert_seconds($resolutionTime),
+            'pending_time' => $totalPendingTime,
+            'pending_time_formated' => convert_seconds($totalPendingTime),
+            'resolution_time_real' => $resolutionTimeReal,
+            'resolution_time_real_formated' => convert_seconds($resolutionTimeReal),
         ];
     }
-
+    
     private function getFirstLog($publicLog, $privateLog)
     {
         if (!$publicLog) return $privateLog[0] ?? null;

@@ -30,9 +30,18 @@ class Test extends Command
      */
     public function handle()
     {
+        self::recalculate();
+        // self::sla();
         // self::carbon();
-        self::sla();
         // self::chartCarousel();
+    }
+
+    public function recalculate()
+    {
+        $ticket = Ticket::ref('R-002259')->first();
+        $ticket->recalculate();
+
+        dd($ticket);        
     }
 
     public function carbon()
