@@ -17,59 +17,47 @@ class Table extends Component
     #[Computed]
     public function items()
     {
-        $items = Contact::classPerson()
-            ->selectFullName()
-            ->orderByDefault()
-            ->where('org_id', 1)
-            ->get();
-
-        $tickets = \App\Models\Ticket::filter($this->params)
-            ->select(['agent_l1_id', 'agent_l2_id', 'agent_l1_response_time', 'agent_l2_response_time', 'agent_l2_resolution_time', 'resolution_time_real', 'pending_time'])
-            ->get();
-
-        $result = [];
-        foreach ($items as $agent) {
-            $l1Tickets = $tickets->where('agent_l1_id', $agent->id);
-            $l2Tickets = $tickets->where('agent_l2_id', $agent->id);
-
-            $agentL1ResponseTime = $l1Tickets->sum('agent_l1_response_time');
-            $agentL2ResponseTime = $l2Tickets->sum('agent_l2_response_time');
-            $agentL2ResolutionTime = $l2Tickets->sum('agent_l2_resolution_time');
-            $resolutionTimeReal = $l2Tickets->sum('resolution_time_real');
-            $pendingTime = $l2Tickets->sum('pending_time');
-
-            $seriesL1ResponseTime = $agentL1ResponseTime > 0 ? round($agentL1ResponseTime / 60) : 0;
-            $seriesL2ResponseTime = $agentL2ResponseTime > 0 ? round($agentL2ResponseTime / 60) : 0;
-            $seriesL2ResolutionTime = $agentL2ResolutionTime > 0 ? round($agentL2ResolutionTime / 60) : 0;
-            $seriesResponseTimeReal = $resolutionTimeReal > 0 ? round($resolutionTimeReal / 60) : 0;
-            $seriesPendingTime = $pendingTime > 0 ? round($pendingTime / 60) : 0;
-
-            // Hanya tambahkan jika salah satu dari tiga kolom ada isinya (tidak 0)
-            if ($seriesL1ResponseTime || $seriesL2ResponseTime || $seriesL2ResolutionTime) {
-                $result[] = [
-                    'name' => $agent->name,
-                    'response_time_l1' => $seriesL1ResponseTime . ' m',
-                    'response_time_l2' => $seriesL2ResponseTime . ' m',
-                    'resolution_time' => $seriesL2ResolutionTime . ' m',
-                    'resolution_time_real' => $seriesResponseTimeReal . ' m',
-                    'pending_time' => $seriesPendingTime . ' m',
-                ];
-            }
-        }
-
-        // Pagination manual
-        $page = request()->get('page', 1);
         $perPage = 5;
-        $resultCollection = collect($result);
-        $paginated = new LengthAwarePaginator(
-            $resultCollection->forPage($page, $perPage),
-            $resultCollection->count(),
-            $perPage,
-            $page,
-            ['path' => request()->url(), 'query' => request()->query()]
+        $query = \App\Models\Ticket::filter($this->params)
+            ->selectRaw('
+                contact.name as name,
+                ticket.agent_l1_id,
+                ticket.agent_l2_id,
+                SUM(ticket.agent_l1_response_time) as response_time_l1,
+                SUM(ticket.agent_l2_response_time) as response_time_l2,
+                SUM(ticket.agent_l2_resolution_time) as resolution_time,
+                SUM(ticket.resolution_time_real) as resolution_time_real,
+                SUM(ticket.pending_time) as pending_time
+            ')
+            ->join('contact', function($join) {
+                $join->on('contact.id', '=', 'ticket.agent_l1_id')
+                     ->orOn('contact.id', '=', 'ticket.agent_l2_id');
+            })
+            ->where('contact.org_id', 1)
+            ->groupBy('contact.id', 'contact.name', 'ticket.agent_l1_id', 'ticket.agent_l2_id');
+
+        $result = $query->paginate($perPage);
+
+        // Format hasil agar sesuai tampilan sebelumnya (dalam menit dan ada satuan ' m')
+        $result->getCollection()->transform(function ($row) {
+            return [
+                'name' => $row->name,
+                'response_time_l1' => $row->response_time_l1 > 0 ? round($row->response_time_l1 / 60) . ' m' : '0 m',
+                'response_time_l2' => $row->response_time_l2 > 0 ? round($row->response_time_l2 / 60) . ' m' : '0 m',
+                'resolution_time' => $row->resolution_time > 0 ? round($row->resolution_time / 60) . ' m' : '0 m',
+                'resolution_time_real' => $row->resolution_time_real > 0 ? round($row->resolution_time_real / 60) . ' m' : '0 m',
+                'pending_time' => $row->pending_time > 0 ? round($row->pending_time / 60) . ' m' : '0 m',
+            ];
+        });
+
+        // Filter hanya jika salah satu dari tiga kolom ada isinya (tidak 0)
+        $result->setCollection(
+            $result->getCollection()->filter(function ($row) {
+                return $row['response_time_l1'] !== '0 m' || $row['response_time_l2'] !== '0 m' || $row['resolution_time'] !== '0 m';
+            })->values()
         );
 
-        return $paginated; 
+        return $result;
     }
 
     #[On('filter')]

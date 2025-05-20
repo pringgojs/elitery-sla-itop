@@ -119,27 +119,27 @@ class Ticket extends Model
         }
 
         if ($params['selectedOrg']) {
-            $q->whereIn('org_id', $params['selectedOrg']);
+            $q->whereIn('ticket.org_id', $params['selectedOrg']);
         }
 
         if ($params['selectedCaller']) {
-            $q->whereIn('caller_id', $params['selectedCaller']);
+            $q->whereIn('ticket.caller_id', $params['selectedCaller']);
         }
 
         if ($params['selectedAgent']) {
-            $q->whereIn('agent_l1_id', $params['selectedAgent']);
+            $q->whereIn('ticket.agent_l1_id', $params['selectedAgent']);
         }
 
         if ($params['selectedAgentL2']) {
-            $q->whereIn('agent_l2_id', $params['selectedAgentL2']);
+            $q->whereIn('ticket.agent_l2_id', $params['selectedAgentL2']);
         }
         
         if ($params['selectedTeam']) {
-            $q->whereIn('team_id', $params['selectedTeam']);
+            $q->whereIn('ticket.team_id', $params['selectedTeam']);
         }
 
         if ($params['selectedType']) {
-            $q->whereIn('finalclass', $params['selectedType']);
+            $q->whereIn('ticket.finalclass', $params['selectedType']);
         }
 
         
@@ -155,23 +155,23 @@ class Ticket extends Model
     {
         if (in_array('RoutineChange', $type) || in_array('NormalChange', $type) || in_array('EmergencyChange', $type)) {
             $q->whereHas('ticketChange', function ($query) use ($status) {
-                $query->whereIn('status', $status);
+                $query->whereIn('change.status', $status);
             });
         }
 
         if (in_array('Incident', $type)) {
             $q->whereHas('ticketIncident', function ($query) use ($status) {
-                $query->whereIn('status', $status);
+                $query->whereIn('ticket_incident.status', $status);
             });
         }
         if (in_array('Problem', $type)) {
             $q->whereHas('ticketProblem', function ($query) use ($status) {
-                $query->whereIn('status', $status);
+                $query->whereIn('ticket_problem.status', $status);
             });
         }
         if (in_array('UserRequest', $type)) {
             $q->whereHas('ticketRequest', function ($query) use ($status) {
-                $query->whereIn('status', $status);
+                $query->whereIn('ticket_request.status', $status);
             });
         }
     }
