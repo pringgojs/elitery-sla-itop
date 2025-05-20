@@ -4,7 +4,7 @@
         'Response Time L1',
         'Response Time L2',
         'Resolution Time',
-        'Resolution Time Real',
+        'Actual Resolution Time',
         'Pending Time',
     ]" title="Agents">
         <!-- Table Content -->

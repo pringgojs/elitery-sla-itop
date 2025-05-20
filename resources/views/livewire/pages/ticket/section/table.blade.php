@@ -8,7 +8,7 @@
         'Title',
         'Agent L1',
         'Agent L2',
-        'Real Resolution Time',
+        'Actual Resolution Time',
         'Total Pending Time',
         'Last Update SLA',
     ]" title="Ticket">
