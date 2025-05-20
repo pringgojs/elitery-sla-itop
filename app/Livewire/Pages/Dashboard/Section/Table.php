@@ -42,11 +42,11 @@ class Table extends Component
         $result->getCollection()->transform(function ($row) {
             return [
                 'name' => $row->name,
-                'response_time_l1' => $row->response_time_l1 > 0 ? round($row->response_time_l1 / 60) . ' m' : '0 m',
-                'response_time_l2' => $row->response_time_l2 > 0 ? round($row->response_time_l2 / 60) . ' m' : '0 m',
-                'resolution_time' => $row->resolution_time > 0 ? round($row->resolution_time / 60) . ' m' : '0 m',
-                'resolution_time_real' => $row->resolution_time_real > 0 ? round($row->resolution_time_real / 60) . ' m' : '0 m',
-                'pending_time' => $row->pending_time > 0 ? round($row->pending_time / 60) . ' m' : '0 m',
+                'response_time_l1' => $row->response_time_l1 > 0 ? convert_seconds($row->response_time_l1) : 0,
+                'response_time_l2' => $row->response_time_l2 > 0 ? convert_seconds($row->response_time_l2) : 0,
+                'resolution_time' => $row->resolution_time > 0 ? convert_seconds($row->resolution_time) : 0,
+                'resolution_time_real' => $row->resolution_time_real > 0 ? convert_seconds($row->resolution_time_real) : 0,
+                'pending_time' => $row->pending_time > 0 ? convert_seconds($row->pending_time) : 0,
             ];
         });
 
@@ -64,6 +64,7 @@ class Table extends Component
     public function filter($params)
     {
         $this->params = $params;
+        $this->resetPage();
     }
     
     public function render()

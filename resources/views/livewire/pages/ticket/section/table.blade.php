@@ -8,8 +8,8 @@
         'Title',
         'Agent L1',
         'Agent L2',
-        'Actual Resolution Time',
-        'Total Pending Time',
+        'Pending Time',
+        'Resolution Time',
         'Last Update SLA',
     ]" title="Ticket">
         <!-- Table Content -->
@@ -65,14 +65,17 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         Name: {{ $item->agent_l2_name ?? '-' }} <br>
                         Response Time:
-                        {{ $item->agent_l2_response_time ? convert_seconds($item->agent_l2_response_time) : 0 }} <br>
-                        Resolution Time:
-                        {{ $item->agent_l2_resolution_time ? convert_seconds($item->agent_l2_resolution_time) : 0 }}
+                        {{ $item->agent_l2_response_time ? convert_seconds($item->agent_l2_response_time) : 0 }}
+
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {{ $item->resolution_time_real ? convert_seconds($item->resolution_time_real) : 0 }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         {{ $item->pending_time ? convert_seconds($item->pending_time) : 0 }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                        Resolution Time:
+                        {{ $item->agent_l2_resolution_time ? convert_seconds($item->agent_l2_resolution_time) : 0 }}
+                        <br>
+                        Actual Resolution Time:
+                        {{ $item->resolution_time_real ? convert_seconds($item->resolution_time_real) : 0 }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         {{ $item->sla_last_check ? date_format_human($item->sla_last_check) : '-' }}
                     </td>
