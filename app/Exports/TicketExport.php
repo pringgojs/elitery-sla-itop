@@ -51,6 +51,8 @@ class TicketExport implements FromCollection, WithHeadings, WithMapping
             'Response Time L1',
             'Response Time L2',
             'Resolution Time',
+            'Actual Resolution Time',
+            'Pending Time',
             'Ticket Type',
             'Ticket Status',
         ];
@@ -71,6 +73,8 @@ class TicketExport implements FromCollection, WithHeadings, WithMapping
             $item->agent_l1_response_time ? convert_seconds($item->agent_l1_response_time) : 0,
             $item->agent_l2_response_time ? convert_seconds($item->agent_l2_response_time) : 0,
             $item->agent_l2_resolution_time ? convert_seconds($item->agent_l2_resolution_time) : 0,
+            $item->resolution_time_real ? convert_seconds($item->resolution_time_real) : 0,
+            $item->pending_time ? convert_seconds($item->pending_time) : 0,
             $item->finalclass,
             $item->operational_status,
         ];
