@@ -6,7 +6,7 @@
         'Resolution Time',
         'Actual Resolution Time',
         'Pending Time',
-    ]" title="Agents">
+    ]" title="Agents" useSearch="true">
         <!-- Table Content -->
         <x-slot:table>
             @foreach ($this->items as $index => $item)

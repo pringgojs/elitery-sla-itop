@@ -13,6 +13,7 @@ class Table extends Component
     use WithPagination;
 
     public $params = [];
+    public $search = '';
 
     #[Computed]
     public function items()
@@ -36,6 +37,12 @@ class Table extends Component
             })
             ->leftJoin('person', 'person.id', '=', 'contact.id')
             ->where('contact.org_id', 1)
+            ->where(function($query) {
+                if ($this->search) {
+                    $query->where('contact.name', 'like', '%' . $this->search . '%')
+                          ->orWhere('person.first_name', 'like', '%' . $this->search . '%');
+                }
+            })
             ->groupBy('contact.id', 'person.first_name', 'contact.name', 'ticket.agent_l1_id', 'ticket.agent_l2_id')
             ->orderBy('fullname', 'asc');
 
@@ -66,6 +73,13 @@ class Table extends Component
     public function filter($params)
     {
         $this->params = $params;
+        $this->resetPage();
+    }
+
+    #[On('search')]
+    public function search($search)
+    {
+        $this->search = $search;
         $this->resetPage();
     }
     
