@@ -21,7 +21,7 @@
             </div>
         </div>
         <!-- Content Area -->
-        <div class="text-center text-lg font-medium h-96">
+        <div wire:ignore class="text-center text-lg font-medium h-96">
             <canvas id="bar-chart-{{ $id }}"></canvas>
         </div>
     </div>
