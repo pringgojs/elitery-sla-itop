@@ -52,8 +52,7 @@
                         {{ $item->organization->name ?? '-' }}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">
-                        <b>{{ $item->id }}<x-bi-dot class="w-5 h-5 inline" />{{ $item->ref }}<x-bi-dot
-                                class="w-5 h-5 inline" /> {{ $item->finalclass }}
+                        <b>{{ $item->ref }}<x-bi-dot class="w-5 h-5 inline" /> {{ $item->finalclass }}
                             <x-bi-dot class="w-5 h-5 inline" /> {!! $item->status() !!}</b> <br>
                         {{ $item->title }}
                     </td>
@@ -75,7 +74,8 @@
                         {{ $item->agent_l2_resolution_time ? convert_seconds($item->agent_l2_resolution_time) : 0 }}
                         <br>
                         Actual Resolution Time:
-                        {{ $item->resolution_time_real ? convert_seconds($item->resolution_time_real) : 0 }}</td>
+                        {{ $item->resolution_time_real ? convert_seconds($item->resolution_time_real) : 0 }}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         {{ $item->sla_last_check ? date_format_human($item->sla_last_check) : '-' }}
                     </td>
