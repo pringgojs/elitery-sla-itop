@@ -109,16 +109,12 @@ class Data extends Component
         $data['title'] = self::handlingRequestTitle();
 
         $data['legend'] = Contact::classTeam()->select(['id', 'name'])->pluck('name')->toArray();
-
-        $colors = $this->generateRandomColors(count($data['legend']));
-
         $counter = [];
         foreach (Contact::classTeam()->select(['id', 'name'])->get() as $i => $item) {
             $count = Ticket::filter($this->params)->where('team_id', $item->id)->count();
             $series = [
                 'what' => $item->name,
-                'value' => $count,
-                'color' => $colors[$i],
+                'value' => $count
             ];
 
             array_push($counter, $series);
@@ -128,16 +124,6 @@ class Data extends Component
         $data['label'] = 'Department';
 
         return $data;
-    }
-
-    public function generateRandomColors($count = 5)
-    {
-        $colors = [];
-        for ($i = 0; $i < $count; $i++) {
-            $colors[] = sprintf("#%06X", mt_rand(0, 0xFFFFFF));
-        }
-
-        return $colors;
     }
     
     public function getMonth()

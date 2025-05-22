@@ -59,12 +59,10 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
                             borderWidth: 0,
                             borderRadius: 6,
                             spacing: 1,
-                            backgroundColor(ctx) {
-                                if (ctx.type !== "data") {
-                                    return "transparent";
-                                }
-                                return ctx.raw._data.color;
-                            },
+                            backgroundColor: this.generateTreemapColor(
+                                this.currentSeries
+                            ),
+
                             labels: {
                                 align: "left",
                                 display: true,
@@ -79,8 +77,8 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
                                 },
                                 color: ["white", "whiteSmoke"],
                                 font: [
-                                    { size: 20, weight: "bold" },
-                                    { size: 12 },
+                                    { size: 16, weight: "200px" },
+                                    { size: 10 },
                                 ],
                                 position: "center",
                             },
@@ -90,7 +88,6 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    events: [],
                     plugins: {
                         title: {
                             display: false,
@@ -100,7 +97,17 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
                             display: false,
                         },
                         tooltip: {
-                            enabled: false,
+                            enabled: true,
+                            callbacks: {
+                                title() {
+                                    return "";
+                                },
+                                label(ctx) {
+                                    const data = ctx.raw._data;
+                                    const value = ctx.raw.v;
+                                    return `${data.what}: ${value}`;
+                                },
+                            },
                         },
                     },
                 },
@@ -112,6 +119,21 @@ Livewire.hook("component.init", ({ component, cleanup }) => {
                 this.chart.destroy();
                 this.chart = null;
             }
+        },
+        generateTreemapColor(series) {
+            const values = series.map((item) => item.value);
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const range = max - min || 1; // Hindari pembagian nol
+
+            return (ctx) => {
+                if (ctx.type !== "data") return "transparent";
+
+                const value = ctx.raw.v;
+                // Normalisasi nilai antara 0 dan 1, kemudian skala alpha dari 0.3 sampai 1
+                const alpha = 0.3 + 0.7 * ((value - min) / range);
+                return `rgba(0, 153, 76, ${alpha.toFixed(2)})`; // hijau dengan gradasi
+            };
         },
     }));
 });
