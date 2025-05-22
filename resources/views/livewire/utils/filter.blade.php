@@ -358,7 +358,7 @@
                                     <x-ionicon-close-outline class="shrink-0 size-3" />
                                 </button>
                                 <template x-if="idx < items.length - 1">
-                                    <span>,</span>
+                                    <span></span>
                                 </template>
                             </span>
                         </template>
