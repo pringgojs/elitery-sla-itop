@@ -36,7 +36,8 @@ class Table extends Component
             })
             ->leftJoin('person', 'person.id', '=', 'contact.id')
             ->where('contact.org_id', 1)
-            ->groupBy('contact.id', 'person.first_name', 'contact.name', 'ticket.agent_l1_id', 'ticket.agent_l2_id');
+            ->groupBy('contact.id', 'person.first_name', 'contact.name', 'ticket.agent_l1_id', 'ticket.agent_l2_id')
+            ->orderBy('fullname', 'asc');
 
         $result = $query->paginate($perPage);
 
