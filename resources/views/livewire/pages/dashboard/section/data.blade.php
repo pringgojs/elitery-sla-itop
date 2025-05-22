@@ -35,7 +35,7 @@
             id="treemap-chart-handling-request-per-dept" :title="$treemapSource['title']" :label="$treemapSource['label']" :series="$treemapSource['series']" />
     </div>
 
-    <div class="mt-5 shadow-sm bg-white p-5" wire:ignore>
+    <div class="mt-5 shadow-sm rounded-md bg-white p-5" wire:ignore>
         <livewire:utils.bar-chart lazy listener="on-update-ticket-per-month" id="bar-chart-ticket-per-month"
             :title="$barChartTotalTicketPerMonth['title']" :legend="$barChartTotalTicketPerMonth['legend']" :series="$barChartTotalTicketPerMonth['series']" />
     </div>
