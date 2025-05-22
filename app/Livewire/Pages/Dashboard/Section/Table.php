@@ -20,6 +20,7 @@ class Table extends Component
         $perPage = 5;
         $query = \App\Models\Ticket::filter($this->params)
             ->selectRaw('
+                CONCAT(person.first_name, " ", contact.name) as fullname,
                 contact.name as name,
                 ticket.agent_l1_id,
                 ticket.agent_l2_id,
@@ -33,14 +34,15 @@ class Table extends Component
                 $join->on('contact.id', '=', 'ticket.agent_l1_id')
                      ->orOn('contact.id', '=', 'ticket.agent_l2_id');
             })
+            ->leftJoin('person', 'person.id', '=', 'contact.id')
             ->where('contact.org_id', 1)
-            ->groupBy('contact.id', 'contact.name', 'ticket.agent_l1_id', 'ticket.agent_l2_id');
+            ->groupBy('contact.id', 'person.first_name', 'contact.name', 'ticket.agent_l1_id', 'ticket.agent_l2_id');
 
         $result = $query->paginate($perPage);
 
-        // Format hasil agar sesuai tampilan sebelumnya (dalam menit dan ada satuan ' m')
         $result->getCollection()->transform(function ($row) {
             return [
+                'fullname' => $row->fullname,
                 'name' => $row->name,
                 'response_time_l1' => $row->response_time_l1 > 0 ? convert_seconds($row->response_time_l1) : 0,
                 'response_time_l2' => $row->response_time_l2 > 0 ? convert_seconds($row->response_time_l2) : 0,
@@ -50,7 +52,6 @@ class Table extends Component
             ];
         });
 
-        // Filter hanya jika salah satu dari tiga kolom ada isinya (tidak 0)
         $result->setCollection(
             $result->getCollection()->filter(function ($row) {
                 return $row['response_time_l1'] !== '0 m' || $row['response_time_l2'] !== '0 m' || $row['resolution_time'] !== '0 m';
