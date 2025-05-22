@@ -335,15 +335,33 @@
             {{-- Filter --}}
 
             <template x-for="(items, type) in selected" :key="type">
-                <template x-for="item in items" :key="item.id">
+                <template x-if="items.length > 0">
                     <span
-                        class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                        <p x-html="item.name"></p>
-                        <button type="button" @click="toggleSelection(type, item)"
-                            class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
-                            <span class="sr-only">Remove badge</span>
-                            <x-ionicon-close-outline class="shrink-0 size-3" />
-                        </button>
+                        class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-100">
+                        <span
+                            x-text="{
+                            organization: 'Organization',
+                            caller: 'Caller',
+                            team: 'Team',
+                            agent: 'Agent L1',
+                            agent_l2: 'Agent L2',
+                            type: 'Type',
+                            status: 'Status'
+                        }[type] || type"
+                            class="font-bold"></span>:
+                        <template x-for="(item, idx) in items" :key="item.id">
+                            <span class="inline-flex items-center gap-x-1.5 ms-2">
+                                <span x-html="item.name"></span>
+                                <button type="button" @click="toggleSelection(type, item)"
+                                    class="shrink-0 size-4 inline-flex items-center justify-center rounded-md hover:bg-green-200 focus:outline-none focus:bg-green-200 focus:text-green-500 dark:hover:bg-green-900">
+                                    <span class="sr-only">Remove badge</span>
+                                    <x-ionicon-close-outline class="shrink-0 size-3" />
+                                </button>
+                                <template x-if="idx < items.length - 1">
+                                    <span>,</span>
+                                </template>
+                            </span>
+                        </template>
                     </span>
                 </template>
             </template>
@@ -352,7 +370,8 @@
             <template x-if="dateType">
                 <span
                     class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 mr-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                    Date: <div
+                    <span class="font-bold">Date : </span>
+                    <div
                         x-html="dateType =='today' ? 'hari ini': dateType == 'this-month' ? 'bulan ini' : dateType == 'other-month' ? '' : ''">
                     </div>
                     <div
