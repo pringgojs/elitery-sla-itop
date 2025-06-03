@@ -76,7 +76,7 @@ class TicketExport implements FromCollection, WithHeadings, WithMapping
             $item->resolution_time_real ? convert_seconds($item->resolution_time_real) : 0,
             $item->pending_time ? convert_seconds($item->pending_time) : 0,
             $item->finalclass,
-            $item->operational_status,
+            $item->status() ? $item->status() : '-',
         ];
     }
 }
