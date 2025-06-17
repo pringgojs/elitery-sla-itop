@@ -132,6 +132,10 @@
                             role="menu" aria-orientation="vertical"
                             aria-labelledby="hs-header-classic-dropdown-logout">
                             <div class="py-1 md:px-1 space-y-0.5">
+                                <a href="{{ route('profile.show') }}"
+                                    class="py-2.5 px-2 flex items-center text-sm text-gray-800 hover:text-green-600 hover:bg-gray-100 rounded-lg focus:outline-none focus:text-green-600 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500">
+                                    Profil Saya
+                                </a>
                                 <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf
 
