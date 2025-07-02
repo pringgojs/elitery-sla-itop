@@ -64,20 +64,4 @@ class FormUser extends ModalComponent
     {
         return false;
     }
-
-    #[Computed]
-    public function generatePassword($length = 18)
-    {
-        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.
-                  '0123456789-=~!@#$%^&*()_+/<>?;:[]{}\|';
-
-        $str = '';
-        $max = strlen($chars) - 1;
-
-        for ($i = 0; $i < $length; $i++) {
-            $str .= $chars[random_int(0, $max)];
-        }
-
-        return $str;
-    }
 }
