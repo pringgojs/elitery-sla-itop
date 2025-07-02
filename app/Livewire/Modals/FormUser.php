@@ -22,11 +22,6 @@ class FormUser extends ModalComponent
 
     public $user_id;
 
-    // public $password;
-    public $is_create_db_account;
-
-    public $is_create_cpanel_account;
-
     public $isSuperAdmin = false;
 
     public function mount()
