@@ -7,8 +7,7 @@
                 {{ $user_id ? 'Perbaruhi  User' : 'Tambah User' }}
             </h3>
             <button type="button" wire:click="$dispatch('closeModal')"
-                class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="static-modal">
+                class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white">
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 14 14">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -124,7 +123,7 @@
                                 id="hs-trailing-multiple-add-on" name="inline-add-on"
                                 class="py-3 px-4 block w-full border-gray-200 rounded-lg rounded-e-none text-sm focus:z-10 focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 placeholder="Tulis password baru...">
-                            <div @click="generatePassword()"
+                            <div @click.stop="generatePassword()"
                                 class="px-4 cursor-pointer inline-flex items-center min-w-fit border border-s-0 border-gray-200 bg-gray-50 hover:bg-green-100 dark:bg-neutral-700 dark:border-neutral-600"
                                 title="Generate Password">
                                 <svg class="w-6 h-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none"
