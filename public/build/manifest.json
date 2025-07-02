@@ -1,6 +1,10 @@
 {
+  "_auto-Bjo_A7Qx.js": {
+    "file": "assets/auto-Bjo_A7Qx.js",
+    "name": "auto"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-DLtMIkKh.css",
+    "file": "assets/app-cxWkxLd7.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -10,10 +14,28 @@
     "src": "resources/js/app.js",
     "isEntry": true
   },
+  "resources/js/bar-chart.js": {
+    "file": "assets/bar-chart-ByUOMXm-.js",
+    "name": "bar-chart",
+    "src": "resources/js/bar-chart.js",
+    "isEntry": true,
+    "imports": [
+      "_auto-Bjo_A7Qx.js"
+    ]
+  },
   "resources/js/map.js": {
     "file": "assets/map-F35ken9Q.js",
     "name": "map",
     "src": "resources/js/map.js",
     "isEntry": true
+  },
+  "resources/js/treemap-chart.js": {
+    "file": "assets/treemap-chart-BuxfrFY6.js",
+    "name": "treemap-chart",
+    "src": "resources/js/treemap-chart.js",
+    "isEntry": true,
+    "imports": [
+      "_auto-Bjo_A7Qx.js"
+    ]
   }
 }
