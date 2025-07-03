@@ -29,6 +29,11 @@ class Contact extends Model
         return $this->hasOne(Person::class, 'id', 'id');
     }
 
+    public function scopeElitery($q)
+    {
+        $q->where('org_id', 1);
+    }
+
     public function scopeJoinPerson($q)
     {
         $q->join('person', 'contact.id', '=', 'person.id');

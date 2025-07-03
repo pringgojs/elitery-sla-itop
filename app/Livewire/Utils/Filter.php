@@ -84,7 +84,7 @@ class Filter extends Component
         $this->organizations = Organization::select(['id', 'name'])->orderByDefault()->get();
         $this->teams = Contact::classTeam()->select(['id', 'name'])->get();
         $this->callers = Contact::selectFullName()->get();
-        $this->agents = Contact::classPerson()->selectFullName()->get();
+        $this->agents = Contact::elitery()->classPerson()->selectFullName()->get();
         $this->types = Constants::TICKET_TYPES;
         $this->statusTicketRequest = status_ticket_request();
         $this->statusTicketIncident = status_ticket_incident();
