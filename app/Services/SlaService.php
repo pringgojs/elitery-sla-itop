@@ -5,6 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Ticket;
+use App\Models\PrivUser;
 use App\Models\UserCpanel;
 use Illuminate\Support\Facades\Http;
 
@@ -40,13 +41,16 @@ class SlaService
         if (!$firstLog) return [];
 
         $date = $this->formatDateToTimezone($firstLog['date']);
+        /* agent ternyata mengambil dari Tabel priv_user */
         $agent = $firstLog['user_name'];
         $agent_id = $firstLog['user_id'];
+
+        $privUser = PrivUser::where('id', $agent_id)->first();  
 
         return [
             'ref' => $this->ticket->ref,
             'agent' => $agent,
-            'agent_id' => $agent_id,
+            'agent_id' => $privUser->contactid ?? 0,
             'response_time' => get_time_diff_inseconds($this->ticket->start_date, $date),
             'response_time_formated' => convert_seconds(get_time_diff_inseconds($this->ticket->start_date, $date)),
             'date_start' => $this->ticket->start_date,
@@ -90,6 +94,7 @@ class SlaService
         $resolutionTimeReal = $resolutionDate
             ? get_time_diff_inseconds($assignmentDate, $resolutionDate): 0;
         $resolutionTime = $resolutionTimeReal - $totalPendingTime;
+        // $privUser = PrivUser::where('id', $privateLog['agent_id'])->first();  
 
         return [
             'ref' => $this->ticket->ref,
